@@ -16,15 +16,14 @@ import CodableFirebase
 class Location: NSObject {
   
 //  var tripData: TripData
-  var latitude: CLLocationDegrees
-  var longitude: CLLocationDegrees
+  var coordinate: CLLocationCoordinate2D?
   var locationManager = CLLocationManager()
 
   override init() {
-    self.latitude = 0.00
-    self.longitude = 0.00
-//    self.tripData = TripData()
+    self.coordinate = nil
     super.init()
+    
+    getCurrentLocation()
   }
 
 //  private func loadData() throws -> Void {
@@ -42,7 +41,7 @@ class Location: NSObject {
 //    }
 //  }
   
-  func getCurrentLocationCoordinate() -> CLLocationCoordinate2D? {
+  func getCurrentLocation() -> Void {
     locationManager.requestWhenInUseAuthorization()
     
     if CLLocationManager.locationServicesEnabled() {
@@ -52,13 +51,13 @@ class Location: NSObject {
     }
     
     if let currLocation = locationManager.location {
-      self.latitude = currLocation.coordinate.latitude
-      self.longitude = currLocation.coordinate.longitude
+      let latitude = currLocation.coordinate.latitude
+      let longitude = currLocation.coordinate.longitude
       
-      let coordinate = CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
-      return coordinate
+      self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     } else {
-      return nil
+      print("Unable to grab location")
+      self.coordinate = nil
     }
   }
 }

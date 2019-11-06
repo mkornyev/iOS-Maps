@@ -11,6 +11,8 @@ import MapKit
 
 struct RootView: View {
     @State private var selection = 0
+    // Use core Data to store true for this variable if not set (in app Delegate)
+    // Set data here 
     @State private var firstTimeUser = true
  
     var body: some View {
@@ -44,9 +46,10 @@ struct RootView: View {
                   AddTripView()
                     .edgesIgnoringSafeArea(.bottom)
                     .edgesIgnoringSafeArea(.top)
-                    .navigationBarTitle("Your Trip")
                   }
                 }
+                //** NAVBAR NAME DOESNT WORK 
+                .navigationBarTitle("Your Trip")
                 .font(.title)
                 .tabItem {
                     VStack {

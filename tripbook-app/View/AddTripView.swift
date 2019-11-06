@@ -21,16 +21,22 @@ struct AddTripView: UIViewRepresentable {
 
   func updateUIView(_ view: MKMapView, context: Context) {
     view.showsUserLocation = true
-
-    // Grab current location
-    if let coordinate = location.getCurrentLocationCoordinate() {
+    
+    location.getCurrentLocation()
+    
+    // Try grabbing current location
+    if let coordinate = location.coordinate {
       // **Set zoom level for ongoing trips
       let span = MKCoordinateSpan(latitudeDelta: 1.5, longitudeDelta: 1.5)
       
       let region = MKCoordinateRegion(center: coordinate, span: span)
       view.setRegion(region, animated: true)
     } else {
-      // push new VC onto map
+      // push new Modal onto map
+      print("No location, tr")
+      
+//      let alert = UIAlertController(title: "Alert", message: "You are on Airplane mode. Refresh the app and try again.", preferredStyle: .alert)
+//      self.present(alert, animated: true, completion: nil)
     }
   }
 }
