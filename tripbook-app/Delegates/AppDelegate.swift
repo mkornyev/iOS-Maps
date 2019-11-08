@@ -14,14 +14,13 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    
     // Set up firebase
     FirebaseApp.configure()
     
     // Set session User
-    let userId = "jTwrnfSpEiOFVmnYyFtg"
-    let session = UserDefaults.standard
-    session.set(userId, forKey:"currentUser");
+//    let userId = "jTwrnfSpEiOFVmnYyFtg"
+//    let session = UserDefaults.standard
+//    session.set(userId, forKey:"currentUser");
 //    UserDefaults.standard().synchronize();
     
     return true

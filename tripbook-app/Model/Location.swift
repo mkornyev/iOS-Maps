@@ -16,33 +16,18 @@ import CodableFirebase
 class Location: NSObject {
   
 //  var tripData: TripData
-  var latitude: CLLocationDegrees
-  var longitude: CLLocationDegrees
+  var coordinate: CLLocationCoordinate2D?
   var locationManager = CLLocationManager()
 
   override init() {
-    self.latitude = 0.00
-    self.longitude = 0.00
-//    self.tripData = TripData()
+    self.coordinate = nil
     super.init()
+    
+    getCurrentLocation()
   }
-
-//  private func loadData() throws -> Void {
-//    do {
-//    Firestore.firestore().collection("trips").document("JCzEKCv9XGglmZyq8V0J").getDocument { document, error in
-//        if let document = document {
-//            let model = try FirestoreDecoder().decode(TripData.self, from: document.data()) as TripData
-//            print("Model: \(model)")
-//        } else {
-//            print("ERROR")
-//        }
-//      }
-//    } catch {
-//      print("ERROR")
-//    }
-//  }
   
-  func getCurrentLocationCoordinate() -> CLLocationCoordinate2D? {
+  // Func that either sets self.coordinate to nil, or to a valid location
+  func getCurrentLocation() -> Void {
     locationManager.requestWhenInUseAuthorization()
     
     if CLLocationManager.locationServicesEnabled() {
@@ -52,13 +37,13 @@ class Location: NSObject {
     }
     
     if let currLocation = locationManager.location {
-      self.latitude = currLocation.coordinate.latitude
-      self.longitude = currLocation.coordinate.longitude
+      let latitude = currLocation.coordinate.latitude
+      let longitude = currLocation.coordinate.longitude
       
-      let coordinate = CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
-      return coordinate
+      self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     } else {
-      return nil
+      print("Unable to grab location")
+      self.coordinate = nil
     }
   }
 }
