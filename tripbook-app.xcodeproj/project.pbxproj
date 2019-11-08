@@ -13,6 +13,8 @@
 		5098123E236E252F00049E6A /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5098123D236E252F00049E6A /* Location.swift */; };
 		50C03BA2236F2E6700B469DB /* IntroAddTripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C03BA1236F2E6700B469DB /* IntroAddTripView.swift */; };
 		50C03BA4236F7A4B00B469DB /* TripData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C03BA3236F7A4B00B469DB /* TripData.swift */; };
+		50D3CF0F237336E0003794CC /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D3CF0E237336E0003794CC /* MapViewController.swift */; };
+		50D3CF1123733F9F003794CC /* MapViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D3CF1023733F9F003794CC /* MapViewWrapper.swift */; };
 		50DB2F62236DF53D00EB1CDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DB2F61236DF53D00EB1CDA /* AppDelegate.swift */; };
 		50DB2F64236DF53D00EB1CDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DB2F63236DF53D00EB1CDA /* SceneDelegate.swift */; };
 		50DB2F67236DF53D00EB1CDA /* iOSMaps.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 50DB2F65236DF53D00EB1CDA /* iOSMaps.xcdatamodeld */; };
@@ -43,6 +45,8 @@
 		5098123D236E252F00049E6A /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		50C03BA1236F2E6700B469DB /* IntroAddTripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroAddTripView.swift; sourceTree = "<group>"; };
 		50C03BA3236F7A4B00B469DB /* TripData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripData.swift; sourceTree = "<group>"; };
+		50D3CF0E237336E0003794CC /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		50D3CF1023733F9F003794CC /* MapViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWrapper.swift; sourceTree = "<group>"; };
 		50DB2F5E236DF53D00EB1CDA /* tripbook-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tripbook-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50DB2F61236DF53D00EB1CDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50DB2F63236DF53D00EB1CDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +123,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		50D3CF0D237336AA003794CC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				50D3CF1023733F9F003794CC /* MapViewWrapper.swift */,
+				50D3CF0E237336E0003794CC /* MapViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		50DB2F55236DF53D00EB1CDA = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +155,7 @@
 		50DB2F60236DF53D00EB1CDA /* tripbook-app */ = {
 			isa = PBXGroup;
 			children = (
+				50D3CF0D237336AA003794CC /* Controllers */,
 				5098123C236E252300049E6A /* Model */,
 				50981237236E10E900049E6A /* View */,
 				50981236236E10C900049E6A /* Delegates */,
@@ -350,10 +364,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50D3CF1123733F9F003794CC /* MapViewWrapper.swift in Sources */,
 				50DB2F62236DF53D00EB1CDA /* AppDelegate.swift in Sources */,
 				5098123B236E235600049E6A /* AddTripView.swift in Sources */,
 				50C03BA4236F7A4B00B469DB /* TripData.swift in Sources */,
 				50C03BA2236F2E6700B469DB /* IntroAddTripView.swift in Sources */,
+				50D3CF0F237336E0003794CC /* MapViewController.swift in Sources */,
 				50DB2F67236DF53D00EB1CDA /* iOSMaps.xcdatamodeld in Sources */,
 				50DB2F69236DF53D00EB1CDA /* RootView.swift in Sources */,
 				5098123E236E252F00049E6A /* Location.swift in Sources */,
@@ -557,7 +573,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UAZ374FD6P;
-				INFOPLIST_FILE = iOSMapsTests/Info.plist;
+				INFOPLIST_FILE = "tripbook-app/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -580,7 +596,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UAZ374FD6P;
-				INFOPLIST_FILE = iOSMapsTests/Info.plist;
+				INFOPLIST_FILE = "tripbook-app/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
