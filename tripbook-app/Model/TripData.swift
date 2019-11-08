@@ -16,17 +16,27 @@ extension GeoPoint: GeoPointType {}
 class TripData {
 //  let db = Firestore.firestore()
   
-  var from_location: String?
+  var from_location: String
   var to_location: String?
-  var distance: Int?
-  var trip_data: [CLLocationCoordinate2D]?
+  var distance: Int
+  var trip_data: [CLLocationCoordinate2D]
 //  var tripImages: [CLLocationCoordinate2D: String]
 //  var tripAnnotations: [CLLocationCoordinate2D: String]
-  var start_date: Date?
+  var start_date: Date
   var end_date: Date?
-  var visible: Bool?
-  var user: String?
+  var visible: Bool
+  var user: String
   
+  init() {
+    from_location = ""
+    to_location = nil
+    distance = 0
+    trip_data = []
+    start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
+    end_date = nil
+    visible = false
+    user = ""
+  }
 }
 
 

@@ -23,7 +23,16 @@ class MapViewController: UIViewController {
   var location: Location = Location()
   var mapView: MKMapView!
   var tripData = TripData()
-  var route = [CLLocationCoordinate2D]() // dummy data
+  
+  // Dummy vars in place of tripData
+  var from_location = ""
+  var to_location: String? = nil
+  var distance = 0
+  var trip_data: [CLLocationCoordinate2D] = []
+  var start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
+  var end_date: Date? = nil
+  var visible = false
+  var user = ""
   
   // MARK: - Inits
   
@@ -55,9 +64,9 @@ class MapViewController: UIViewController {
       
       // The above async call takes too long (it only populates the data after viewDidLoad runs)
       // so I populate data directly:
-      print(self.tripData)
+      print("init data: \(self.tripData)")
       self.tripData = populateRoute()
-      print(self.tripData)
+      print("loaded data: \(self.tripData)")
     } else {
 //      self.loadTripData(self.tripID)
       
@@ -71,23 +80,16 @@ class MapViewController: UIViewController {
     self.mapView = MKMapView()
     frameMapView()
     
-    // REMOVE
-    print(self.tripData.user)
-    print(self.tripData.end_date)
-    print(self.tripData.trip_data)
-    
-    print("Test: \(populateRoute().end_date)")
-    
+//    self.tripData = populateRoute()
     // REMOVE populate call, replace w/tripData
-    if self.tripData.user == nil { // No trip loaded
+//    if self.tripData.user == "" { // No trip loaded
+    if false { // No trip loaded
       centerMap(onUser: true) // Sets span & region, centers map, and sets an annotation startpoint
-      
+      print("NO USER FOUND")
       // provide basic map tools
     }
-    else if populateRoute().end_date == nil { // Ongoing trip
-      print("------------------------------------------------------")
-      print("Trip is ongoing")
-      print("------------------------------------------------------")
+//    else if populateRoute().end_date == nil { // Ongoing trip
+    else if true { // Ongoing trip
       
       drawPolyline() // Draws polyline from data, sets an annotation endpoint
       centerMap(onUser: false) // Center on trip
@@ -135,7 +137,7 @@ class MapViewController: UIViewController {
     } else {
 //      let data = self.tripData.trip_data!
       // REMOVE
-      let data = populateRoute().trip_data!
+      let data = populateRoute().trip_data
       let latDelta = data.first!.latitude - data.last!.latitude
       let longDelta = data.first!.longitude - data.last!.longitude
       let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)
@@ -147,11 +149,17 @@ class MapViewController: UIViewController {
   }
   
   func drawPolyline() -> Void {
-    let polyline = MKPolyline(coordinates: tripData.trip_data!, count: tripData.trip_data!.count)
+    // REMOVE routes, replace w/TripData.trip
+    let polyline = MKPolyline(coordinates: tripData.trip_data, count: tripData.trip_data.count)
     self.mapView.addOverlay(polyline)
     
-    setAnnotation(coordinate: tripData.trip_data!.first!, title: tripData.from_location!, subTitle: "All roads start somewhere...")
-    setAnnotation(coordinate: tripData.trip_data!.last!, title: tripData.to_location!, subTitle: "Is that as far as you're gonna go?")
+    setAnnotation(coordinate: tripData.trip_data.first!, title: tripData.from_location, subTitle: "All roads start somewhere...")
+    
+    if let toLoc = tripData.to_location {
+      setAnnotation(coordinate: tripData.trip_data.last!, title: toLoc, subTitle: "Is that as far as you're gonna go?")
+    } else {
+      setAnnotation(coordinate: tripData.trip_data.last!, title: "Your Location", subTitle: "Is that as far as you're gonna go?")
+    }
   }
   
   func setAnnotation(coordinate: CLLocationCoordinate2D, title: String, subTitle: String) -> Void {
@@ -204,16 +212,16 @@ extension MapViewController {
   private func switchCase(key: String, value: Any) {
     switch key {
       case "user":
-        self.tripData.user = value as? String
+        self.tripData.user = value as! String
         
       case "from_location":
-        self.tripData.from_location = value as? String
+        self.tripData.from_location = value as! String
       
       case "to_location":
         self.tripData.to_location = value as? String
       
       case "distance":
-        self.tripData.distance = value as? Int
+        self.tripData.distance = value as! Int
         
       case "start_date":
         let t = value as! Timestamp
@@ -224,7 +232,7 @@ extension MapViewController {
         self.tripData.end_date = t.dateValue()
       
       case "visible":
-        self.tripData.visible = value as? Bool
+        self.tripData.visible = value as! Bool
       
       case "trip_data":
         let rawArray = value as! [GeoPoint]
@@ -232,7 +240,7 @@ extension MapViewController {
         
         for point in rawArray {
           let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
-          self.tripData.trip_data!.append(coord)
+          self.tripData.trip_data.append(coord)
         }
       
         print("***********Trip data (switch)**************")
@@ -279,14 +287,80 @@ extension MapViewController: MKMapViewDelegate {
 
 
 // MARK: - Mock Helper
-
+//extension MapViewController {
+//  func populateRoute(_ tripID: String = "") -> Void {
+//    let tripCoords: [[Double]]
+//
+//    if tripID == "" {
+//      self.from_location = "Morewood"
+//      self.to_location = nil
+//      self.distance = 1
+//      self.start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
+//      self.end_date = nil
+//      self.visible = false
+//      self.user = "jTwrnfSpEiOFVmnYyFtg"
+//      self.trip_data = []
+//      //  var tripImages: [CLLocationCoordinate2D: String]
+//      //  var tripAnnotations: [CLLocationCoordinate2D: String]
+//
+//      tripCoords = [
+//        [40.4446433, -79.9430155],
+//        [40.4446515, -79.943509],
+//        [40.4446351, -79.9441098],
+//        [40.4445861, -79.9449574],
+//        [40.4445453, -79.9457942],
+//        [40.4445372, -79.946674],
+//        [40.4450597, -79.9464809],
+//        [40.4455986, -79.9466311],
+//        [40.4462028, -79.9469315],
+//        [40.4467988, -79.9471461],
+//        [40.4472071, -79.9473714],
+//      ]
+//    } else {
+//      self.from_location = "x"
+//      self.to_location = "y"
+//      self.distance = 4
+//      self.start_date = Date(timeIntervalSinceReferenceDate: -13456789.0)
+//      self.end_date = Date(timeIntervalSinceReferenceDate: -13453789.0)
+//      self.visible = true
+//      self.user = "jTwrnfSpEiOFVmnYyFtg"
+//      self.trip_data = []
+//      //  var tripImages: [CLLocationCoordinate2D: String]
+//      //  var tripAnnotations: [CLLocationCoordinate2D: String]
+//
+//      tripCoords = [
+//        [40.4446433, -79.9430155],
+//        [40.4446515, -79.943509],
+//        [40.4446351, -79.9441098],
+//        [40.4445861, -79.9449574],
+//        [40.4445453, -79.9457942],
+//        [40.4445372, -79.946674],
+//        [40.4450597, -79.9464809],
+//        [40.4455986, -79.9466311],
+//        [40.4462028, -79.9469315],
+//        [40.4467988, -79.9471461],
+//        [40.4472071, -79.9473714],
+//      ]
+//    }
+//
+//    for arr in tripCoords {
+//      let coord = CLLocationCoordinate2D(latitude: arr[0], longitude: arr[1])
+//      self.trip_data.append(coord)
+//    }
+//
+//    print("++++++++++++++++ in populateRoute ++++++++++++")
+//    print(self.user)
+//    print(self.trip_data)
+//    print("++++++++++++++++++++++++++++")
+//  }
+//}
 func populateRoute(_ tripID: String = "") -> TripData {
   let tripCoords: [[Double]]
   let data = TripData()
-  
+
   if tripID == "" {
     data.from_location = "Morewood"
-    data.to_location = "Webster Hall"
+    data.to_location = nil
     data.distance = 1
     data.start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
     data.end_date = nil
@@ -295,7 +369,7 @@ func populateRoute(_ tripID: String = "") -> TripData {
     data.trip_data = []
     //  var tripImages: [CLLocationCoordinate2D: String]
     //  var tripAnnotations: [CLLocationCoordinate2D: String]
-    
+
     tripCoords = [
       [40.4446433, -79.9430155],
       [40.4446515, -79.943509],
@@ -320,7 +394,7 @@ func populateRoute(_ tripID: String = "") -> TripData {
     data.trip_data = []
     //  var tripImages: [CLLocationCoordinate2D: String]
     //  var tripAnnotations: [CLLocationCoordinate2D: String]
-    
+
     tripCoords = [
       [40.4446433, -79.9430155],
       [40.4446515, -79.943509],
@@ -335,16 +409,16 @@ func populateRoute(_ tripID: String = "") -> TripData {
       [40.4472071, -79.9473714],
     ]
   }
-  
+
   for arr in tripCoords {
     let coord = CLLocationCoordinate2D(latitude: arr[0], longitude: arr[1])
-    data.trip_data!.append(coord)
+    data.trip_data.append(coord)
   }
-  
+
   print("++++++++++++++++ in populateRoute ++++++++++++")
   print(data.user)
   print(data.trip_data)
   print("++++++++++++++++++++++++++++")
-  
+
   return data
 }
