@@ -12,7 +12,6 @@
 		4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C04FD4F237200CD001A3669 /* PostViewModel.swift */; };
 		4C7E910B237509AF0034FBBB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E910A237509AF0034FBBB /* User.swift */; };
 		4C7E910D237532130034FBBB /* images in Resources */ = {isa = PBXBuildFile; fileRef = 4C7E910C237532130034FBBB /* images */; };
-		4C7E91122375358C0034FBBB /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E91112375358C0034FBBB /* PostCard.swift */; };
 		4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */; };
 		4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */; };
 		4C9C6753236E47EC00CAAD0B /* tripbook_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C6751236E47EC00CAAD0B /* tripbook_app.xcdatamodeld */; };
@@ -21,8 +20,14 @@
 		4C9C675A236E47ED00CAAD0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6759236E47ED00CAAD0B /* Preview Assets.xcassets */; };
 		4C9C675D236E47ED00CAAD0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */; };
 		4C9C6765236E4A4100CAAD0B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */; };
-		6C84B33A237536880024C2F6 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C84B339237536880024C2F6 /* ProfileView.swift */; };
-		6C84B33C237538400024C2F6 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C84B33B237538400024C2F6 /* CardView.swift */; };
+		50CC79512375B3FB00017FE5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79502375B3FB00017FE5 /* MapViewController.swift */; };
+		50CC79532375B41F00017FE5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79522375B41F00017FE5 /* Location.swift */; };
+		50CC79552375B45600017FE5 /* TripData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79542375B45600017FE5 /* TripData.swift */; };
+		50CC79572375B4E700017FE5 /* IntroAddTripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79562375B4E700017FE5 /* IntroAddTripView.swift */; };
+		50CC79582375B77800017FE5 /* MapViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */; };
+		50CC79592375B98C00017FE5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794D2375B3B800017FE5 /* ProfileView.swift */; };
+		50CC795A2375B98F00017FE5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794E2375B3B800017FE5 /* CardView.swift */; };
+		50CC795B2375B99100017FE5 /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794F2375B3B800017FE5 /* PostCard.swift */; };
 		6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -32,7 +37,6 @@
 		4C04FD4F237200CD001A3669 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		4C7E910A237509AF0034FBBB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4C7E910C237532130034FBBB /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
-		4C7E91112375358C0034FBBB /* PostCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCard.swift; sourceTree = "<group>"; };
 		4C9C674A236E47EC00CAAD0B /* tripbook-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tripbook-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,10 +47,16 @@
 		4C9C675C236E47ED00CAAD0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C9C675E236E47ED00CAAD0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWrapper.swift; sourceTree = "<group>"; };
+		50CC794D2375B3B800017FE5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		50CC794E2375B3B800017FE5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		50CC794F2375B3B800017FE5 /* PostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCard.swift; sourceTree = "<group>"; };
+		50CC79502375B3FB00017FE5 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		50CC79522375B41F00017FE5 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		50CC79542375B45600017FE5 /* TripData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripData.swift; sourceTree = "<group>"; };
+		50CC79562375B4E700017FE5 /* IntroAddTripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroAddTripView.swift; sourceTree = "<group>"; };
 		5625A2544F9589AABC6E944B /* Pods_tripbook_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tripbook_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		633367DD27C41920F996FA33 /* Pods-tripbook-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tripbook-app.release.xcconfig"; path = "Target Support Files/Pods-tripbook-app/Pods-tripbook-app.release.xcconfig"; sourceTree = "<group>"; };
-		6C84B339237536880024C2F6 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		6C84B33B237538400024C2F6 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +77,8 @@
 			children = (
 				4C04FD4B2370E68C001A3669 /* Post.swift */,
 				4C7E910A237509AF0034FBBB /* User.swift */,
+				50CC79522375B41F00017FE5 /* Location.swift */,
+				50CC79542375B45600017FE5 /* TripData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -78,16 +90,6 @@
 				6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		4C7E90F22374A2FA0034FBBB /* View */ = {
-			isa = PBXGroup;
-			children = (
-				4C7E91112375358C0034FBBB /* PostCard.swift */,
-				6C84B339237536880024C2F6 /* ProfileView.swift */,
-				6C84B33B237538400024C2F6 /* CardView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		4C9C6741236E47EC00CAAD0B = {
@@ -112,10 +114,10 @@
 			isa = PBXGroup;
 			children = (
 				4C7E910C237532130034FBBB /* images */,
-				4C7E90F22374A2FA0034FBBB /* View */,
 				4C04FD4E237200AB001A3669 /* ViewModel */,
 				4C04FD4D2371FF7E001A3669 /* Model */,
-				4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */,
+				50CC794B2375B3B800017FE5 /* View */,
+				50CC794A2375B39600017FE5 /* Controller */,
 				4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */,
 				4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */,
 				4C9C6754236E47EC00CAAD0B /* ContentView.swift */,
@@ -123,6 +125,7 @@
 				4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */,
 				4C9C675E236E47ED00CAAD0B /* Info.plist */,
 				4C9C6751236E47EC00CAAD0B /* tripbook_app.xcdatamodeld */,
+				4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */,
 				4C9C6758236E47ED00CAAD0B /* Preview Content */,
 			);
 			path = "tripbook-app";
@@ -134,6 +137,26 @@
 				4C9C6759236E47ED00CAAD0B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		50CC794A2375B39600017FE5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				50CC79502375B3FB00017FE5 /* MapViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		50CC794B2375B3B800017FE5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */,
+				50CC794D2375B3B800017FE5 /* ProfileView.swift */,
+				50CC794E2375B3B800017FE5 /* CardView.swift */,
+				50CC794F2375B3B800017FE5 /* PostCard.swift */,
+				50CC79562375B4E700017FE5 /* IntroAddTripView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		9E9D3D2A9D692023249773B0 /* Pods */ = {
@@ -271,15 +294,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C9C6753236E47EC00CAAD0B /* tripbook_app.xcdatamodeld in Sources */,
-				6C84B33A237536880024C2F6 /* ProfileView.swift in Sources */,
+				50CC79552375B45600017FE5 /* TripData.swift in Sources */,
 				4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */,
+				50CC79582375B77800017FE5 /* MapViewWrapper.swift in Sources */,
+				50CC795A2375B98F00017FE5 /* CardView.swift in Sources */,
+				50CC79532375B41F00017FE5 /* Location.swift in Sources */,
+				50CC79572375B4E700017FE5 /* IntroAddTripView.swift in Sources */,
 				4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */,
-				6C84B33C237538400024C2F6 /* CardView.swift in Sources */,
 				4C9C6755236E47EC00CAAD0B /* ContentView.swift in Sources */,
-				4C7E91122375358C0034FBBB /* PostCard.swift in Sources */,
+				50CC795B2375B99100017FE5 /* PostCard.swift in Sources */,
+				50CC79512375B3FB00017FE5 /* MapViewController.swift in Sources */,
 				6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */,
 				4C7E910B237509AF0034FBBB /* User.swift in Sources */,
 				4C04FD4C2370E68C001A3669 /* Post.swift in Sources */,
+				50CC79592375B98C00017FE5 /* ProfileView.swift in Sources */,
 				4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
