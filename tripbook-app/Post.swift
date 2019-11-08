@@ -12,10 +12,12 @@ import FirebaseFirestore
 
 struct Post: Hashable, Identifiable {
   var id: String
-  var tagline: String
   var post_annotation: String
   var post_images: [String]
   var date: Timestamp
+  var username: String
+  var profile_pic: String
+  //var user_image: String
   
   //need to add reference to trip
   //like and comment count??
