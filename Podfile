@@ -10,4 +10,6 @@ target 'tripbook-app' do
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
   pod 'CodableFirebase'
+  pod 'Floaty', '~> 4.2.0' 
+  #pod 'LiquidFloatingActionButton', :git => 'https://github.com/yoavlt/LiquidFloatingActionButton', :branch => 'master'
 end

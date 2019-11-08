@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import FirebaseFirestore
+import Floaty
 //import CodableFirebase
 
 class MapViewController: UIViewController {
@@ -17,6 +18,8 @@ class MapViewController: UIViewController {
   var tripID: String
   var editView: Bool
   var loadTrip: Bool
+  
+  // MARK: - Overlay vars
   
   // MARK: - Models
   
@@ -79,6 +82,7 @@ class MapViewController: UIViewController {
     
     self.mapView = MKMapView()
     frameMapView()
+    self.view.addSubview(mapView)
     
     let data = getRouteData()
 //    self.tripData = populateRoute()
@@ -97,7 +101,7 @@ class MapViewController: UIViewController {
       
       drawPolyline(data) // Draws polyline from data, sets an annotation endpoint
       centerMap(onUser: false, data: data) // Center on trip
-      // show edit tools
+      showButtonTools() // Show edit annotations
     }
     else { // Posted trip
       drawPolyline(data)
@@ -105,7 +109,6 @@ class MapViewController: UIViewController {
       // show annotations (ie label overlay)
     }
     
-    self.view.addSubview(mapView)
     mapView.delegate = self
   }
   
@@ -154,28 +157,52 @@ class MapViewController: UIViewController {
     }
   }
   
-  func drawPolyline(_ data: [CLLocationCoordinate2D]) -> Void {
-    // REMOVE routes, replace w/TripData.trip
-    let polyline = MKPolyline(coordinates: data, count: data.count)
-    self.mapView.addOverlay(polyline)
+  func showButtonTools() -> Void {
+    let floaty = Floaty()
+    floaty.addItem("Add Text", icon: UIImage(named: "TextIcon")!, handler: { item in
+        let alert = UIAlertController(title: "Text Annotation", message: "Drag and stick this annotation onto your trip", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Got it!", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        floaty.close()
+    })
     
-    setAnnotation(coordinate: data.first!, title: tripData.from_location, subTitle: "All roads start somewhere...")
+    floaty.addItem("Add Image", icon: UIImage(named: "ImageIcon")!)
     
-    if let toLoc = tripData.to_location {
-      setAnnotation(coordinate: data.last!, title: toLoc, subTitle: "Is that as far as you're gonna go?")
-    } else {
-      setAnnotation(coordinate: data.last!, title: "Your Location", subTitle: "Is that as far as you're gonna go?")
-    }
-  }
-  
-  func setAnnotation(coordinate: CLLocationCoordinate2D, title: String, subTitle: String) -> Void {
-    let annotation = MKPointAnnotation()
-    annotation.coordinate = coordinate
-    annotation.title = title
-    annotation.subtitle = subTitle
-    mapView.addAnnotation(annotation)
+    floaty.addItem("Share Trip", icon: UIImage(named: "ArrowIcon")!, handler: { item in
+      // stop trip, push to Firebase
+      // show Share trip modal
+      // push post to Firebase
+      // showPost
+      
+      let alert = UIAlertController(title: "Are you sure?", message: "If you post your trip, it will have to end.", preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "Yep, post it!", style: .default, handler: {item in
+          let modalViewController = ModalViewController()
+          modalViewController.modalPresentationStyle = .overFullScreen
+          self.present(modalViewController, animated: true, completion: nil)
+      }))
+      alert.addAction(UIAlertAction(title: "Nope, wait up", style: .default, handler: { item in floaty.close() }))
+      self.present(alert, animated: true, completion: nil)
+    })
+    
+    self.view.addSubview(floaty)
   }
 }
+
+//extension MapViewController: LiquidFloatingActionButtonDataSource {
+//  func numberOfCells(_ liquidFloatingActionButton: LiquidFloatingActionButton) -> Int {
+//    return cells.count
+//  }
+//
+//  func cellForIndex(_ index: Int) -> LiquidFloatingCell {
+//    return cells[index]
+//  }
+//}
+//
+//extension MapViewController: LiquidFloatingActionButtonDelegate {
+//  func liquidFloatingActionButton(didSelectItemAtIndex index: Int){
+//    print("Button #\(index) clicked")
+//  }
+//}
 
 extension MapViewController {
   
@@ -277,17 +304,27 @@ extension MapViewController: MKMapViewDelegate {
     return polylineRenderer
   }
   
-//  func addAnnotations() {
-//      mapView.delegate = self
-//      mapView.addAnnotations(places)
-//
-//      let overlays = places.map { MKCircle(center: $0.coordinate, radius: 100) }
-//      mapView?.addOverlays(overlays)
-//
-//      var locations = places.map { $0.coordinate }
-//      let polyline = MKPolyline(coordinates: &locations, count: locations.count)
-//      mapView?.add(polyline)
-//  }
+  func drawPolyline(_ data: [CLLocationCoordinate2D]) -> Void {
+    // REMOVE routes, replace w/TripData.trip
+    let polyline = MKPolyline(coordinates: data, count: data.count)
+    self.mapView.addOverlay(polyline)
+    
+    setAnnotation(coordinate: data.first!, title: tripData.from_location, subTitle: "All roads start somewhere...")
+    
+    if let toLoc = tripData.to_location {
+      setAnnotation(coordinate: data.last!, title: toLoc, subTitle: "Is that as far as you're gonna go?")
+    } else {
+      setAnnotation(coordinate: data.last!, title: "Your Location", subTitle: "Is that as far as you're gonna go?")
+    }
+  }
+  
+  func setAnnotation(coordinate: CLLocationCoordinate2D, title: String, subTitle: String) -> Void {
+    let annotation = MKPointAnnotation()
+    annotation.coordinate = coordinate
+    annotation.title = title
+    annotation.subtitle = subTitle
+    mapView.addAnnotation(annotation)
+  }
   
 }
 
