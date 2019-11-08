@@ -40,14 +40,16 @@ struct RootView: View {
                 }
                 .tag(1)
             NavigationView {
-                if firstTimeUser {
-                  IntroAddTripView()
-                } else {
-                  AddTripView()
-                    .edgesIgnoringSafeArea(.bottom)
-                    .edgesIgnoringSafeArea(.top)
-                  }
-                }
+//                if firstTimeUser {
+//                  IntroAddTripView()
+//                } else {
+//                  AddTripView()
+//                    .edgesIgnoringSafeArea(.bottom)
+//                    .edgesIgnoringSafeArea(.top)
+//                  }
+//                }
+              MapViewWrapper(tripID: "ignored when loadData == true", editView: true, loadTrip: true).edgesIgnoringSafeArea(.top)
+            }
                 //** NAVBAR NAME DOESNT WORK 
                 .navigationBarTitle("Your Trip")
                 .font(.title)

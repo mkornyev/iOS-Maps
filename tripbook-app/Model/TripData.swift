@@ -8,41 +8,36 @@
 
 import Foundation
 import CoreLocation
-import Firebase
+import FirebaseFirestore
 import CodableFirebase
 
 extension GeoPoint: GeoPointType {}
 
-public struct TripData: Codable {
+class TripData {
 //  let db = Firestore.firestore()
-//  var firstTimeUser = true
   
-  var fromLocation: String
-  var toLocation: String?
+  var from_location: String
+  var to_location: String?
   var distance: Int
-  var tripData: [GeoPoint: GeoPoint] // Store as coordinate?
+  var trip_data: [CLLocationCoordinate2D]
 //  var tripImages: [CLLocationCoordinate2D: String]
 //  var tripAnnotations: [CLLocationCoordinate2D: String]
-  var startDate: Date
-  var endDate: Date?
+  var start_date: Date
+  var end_date: Date?
   var visible: Bool
+  var user: String
   
-  enum CodingKeys: String, CodingKey {
-    case fromLocation = "from_location"
-    case toLocation = "to_location"
-    case distance = "distance"
-    case tripData = "trip_data"
-//    case tripImages = "trip_images"
-//    case tripAnnotations = "trip_annotations"
-    case startDate = "start_date"
-    case endDate = "end_date"
-    case visible = "visible"
+  init() {
+    from_location = ""
+    to_location = nil
+    distance = 0
+    trip_data = []
+    start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
+    end_date = nil
+    visible = false
+    user = ""
   }
-  
-  
 }
-
-
 
 
 // Makes firebase call to load Tripdata

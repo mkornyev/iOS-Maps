@@ -25,22 +25,8 @@ class Location: NSObject {
     
     getCurrentLocation()
   }
-
-//  private func loadData() throws -> Void {
-//    do {
-//    Firestore.firestore().collection("trips").document("JCzEKCv9XGglmZyq8V0J").getDocument { document, error in
-//        if let document = document {
-//            let model = try FirestoreDecoder().decode(TripData.self, from: document.data()) as TripData
-//            print("Model: \(model)")
-//        } else {
-//            print("ERROR")
-//        }
-//      }
-//    } catch {
-//      print("ERROR")
-//    }
-//  }
   
+  // Func that either sets self.coordinate to nil, or to a valid location
   func getCurrentLocation() -> Void {
     locationManager.requestWhenInUseAuthorization()
     

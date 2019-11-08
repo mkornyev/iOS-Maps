@@ -35,8 +35,6 @@ struct AddTripView: UIViewRepresentable {
       // push new Modal onto map
       print("No location, tr")
       
-//      let alert = UIAlertController(title: "Alert", message: "You are on Airplane mode. Refresh the app and try again.", preferredStyle: .alert)
-//      self.present(alert, animated: true, completion: nil)
     }
   }
 }
