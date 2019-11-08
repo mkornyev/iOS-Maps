@@ -25,7 +25,7 @@ struct ProfileView: View {
   
   @ObservedObject private var posts = ProfileViewModel()
 
-  let myImage = AnyView(Image("Profile_pic1")
+  let myImage = AnyView(Image("Profile_pic2")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width:120.0, height: 120.0)
@@ -40,7 +40,7 @@ struct ProfileView: View {
       Text("Jon Doe")
         .font(.title)
         .fontWeight(.bold)
-      Text("Lover of travelling, documenting \n              whereever I go!")
+      Text("Lover of traveling, documenting \n             where ever I go!")
         .font(.subheadline)
 
 
@@ -79,6 +79,7 @@ struct ProfileView: View {
           
           HStack(){
             Text(post.username)
+              .font(.subheadline)
               .fontWeight(.bold)
             
             Text(post.post_annotation)
