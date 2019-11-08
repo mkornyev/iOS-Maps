@@ -21,34 +21,50 @@ struct PostCard: View {
     
     List(posts.posts){ (post: Post) in
       VStack(alignment: .leading) {
-        
-        Image("Landscape1")
+        HStack(){
+          Image(post.profile_pic)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width:50.0, height: 50.0)
+            .clipShape(Circle())
+            .shadow(radius: 10)
+            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+            
+          Text(post.username)
+            .fontWeight(.bold)
+  
+        }
+        .padding(.leading, 10.0)
+        Image(post.post_images[0])
           .resizable()
           .aspectRatio(contentMode: .fill)
           .frame(width:400.0, height: 400.0)
-        HStack() {
+        HStack(alignment: .center, spacing: 80.0) {
           Image("Like_heart")
             .resizable()
             .frame(width: 55.0, height: 30.0)
+          Divider()
           Image("Comment")
             .resizable()
             .frame(width: 50.0, height: 50.0)
         }
-        .padding(.leading, 5.0)
-      
-        Text(post.post_annotation)
-          .font(.headline)
-          .fontWeight(.regular)
-          .padding(.leading, 20.0)
+        .padding(.leading, 80.0)
+        
+        HStack(){
+          Text(post.username)
+            .fontWeight(.bold)
           
+          Text(post.post_annotation)
+            .font(.headline)
+            .fontWeight(.regular)
+          
+        }.padding(.leading, 25.0)
       
       }
       .padding(.horizontal, -20)
-
+      .padding([.top,.bottom], 10)
       
     }
-    
-      
   }
 }
 
