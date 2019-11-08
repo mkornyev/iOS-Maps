@@ -10,6 +10,9 @@
 		210908DB9ED036EF9710BEC0 /* Pods_tripbook_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5625A2544F9589AABC6E944B /* Pods_tripbook_app.framework */; };
 		4C04FD4C2370E68C001A3669 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C04FD4B2370E68C001A3669 /* Post.swift */; };
 		4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C04FD4F237200CD001A3669 /* PostViewModel.swift */; };
+		4C7E90FD2374FD740034FBBB /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C7E90FC2374FD740034FBBB /* comment.png */; };
+		4C7E9109237503210034FBBB /* transparent-heart-icon-22.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C7E9108237503210034FBBB /* transparent-heart-icon-22.png */; };
+		4C7E910B237509AF0034FBBB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E910A237509AF0034FBBB /* User.swift */; };
 		4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */; };
 		4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */; };
 		4C9C6753236E47EC00CAAD0B /* tripbook_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C6751236E47EC00CAAD0B /* tripbook_app.xcdatamodeld */; };
@@ -25,6 +28,11 @@
 		0A4FA2F514E7048BF3CCD5D0 /* Pods-tripbook-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tripbook-app.debug.xcconfig"; path = "Target Support Files/Pods-tripbook-app/Pods-tripbook-app.debug.xcconfig"; sourceTree = "<group>"; };
 		4C04FD4B2370E68C001A3669 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = ../Post.swift; sourceTree = "<group>"; };
 		4C04FD4F237200CD001A3669 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
+		4C7E90F82374EF570034FBBB /* landscape_1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = landscape_1.jpeg; sourceTree = "<group>"; };
+		4C7E90F92374EF610034FBBB /* landscape_2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = landscape_2.jpeg; sourceTree = "<group>"; };
+		4C7E90FC2374FD740034FBBB /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = comment.png; path = ../../../images/comment.png; sourceTree = "<group>"; };
+		4C7E9108237503210034FBBB /* transparent-heart-icon-22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "transparent-heart-icon-22.png"; path = "../../../images/transparent-heart-icon-22.png"; sourceTree = "<group>"; };
+		4C7E910A237509AF0034FBBB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4C9C674A236E47EC00CAAD0B /* tripbook-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tripbook-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -35,7 +43,7 @@
 		4C9C675C236E47ED00CAAD0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C9C675E236E47ED00CAAD0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		4C9C6766236E52B800CAAD0B /* PostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCard.swift; sourceTree = "<group>"; };
+		4C9C6766236E52B800CAAD0B /* PostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostCard.swift; path = ../PostCard.swift; sourceTree = "<group>"; };
 		5625A2544F9589AABC6E944B /* Pods_tripbook_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tripbook_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		633367DD27C41920F996FA33 /* Pods-tripbook-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tripbook-app.release.xcconfig"; path = "Target Support Files/Pods-tripbook-app/Pods-tripbook-app.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,20 +60,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4C04FD4D2371FF7E001A3669 /* Models */ = {
+		4C04FD4D2371FF7E001A3669 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				4C04FD4B2370E68C001A3669 /* Post.swift */,
+				4C7E910A237509AF0034FBBB /* User.swift */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
-		4C04FD4E237200AB001A3669 /* ViewModels */ = {
+		4C04FD4E237200AB001A3669 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				4C04FD4F237200CD001A3669 /* PostViewModel.swift */,
 			);
-			path = ViewModels;
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4C7E90F22374A2FA0034FBBB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4C9C6766236E52B800CAAD0B /* PostCard.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4C7E90F72374EF540034FBBB /* images */ = {
+			isa = PBXGroup;
+			children = (
+				4C7E9108237503210034FBBB /* transparent-heart-icon-22.png */,
+				4C7E90FC2374FD740034FBBB /* comment.png */,
+				4C7E90F82374EF570034FBBB /* landscape_1.jpeg */,
+				4C7E90F92374EF610034FBBB /* landscape_2.jpeg */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		4C9C6741236E47EC00CAAD0B = {
@@ -89,13 +117,14 @@
 		4C9C674C236E47EC00CAAD0B /* tripbook-app */ = {
 			isa = PBXGroup;
 			children = (
-				4C04FD4E237200AB001A3669 /* ViewModels */,
-				4C04FD4D2371FF7E001A3669 /* Models */,
+				4C7E90F72374EF540034FBBB /* images */,
+				4C7E90F22374A2FA0034FBBB /* View */,
+				4C04FD4E237200AB001A3669 /* ViewModel */,
+				4C04FD4D2371FF7E001A3669 /* Model */,
 				4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */,
 				4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */,
 				4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */,
 				4C9C6754236E47EC00CAAD0B /* ContentView.swift */,
-				4C9C6766236E52B800CAAD0B /* PostCard.swift */,
 				4C9C6756236E47ED00CAAD0B /* Assets.xcassets */,
 				4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */,
 				4C9C675E236E47ED00CAAD0B /* Info.plist */,
@@ -190,10 +219,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C7E90FD2374FD740034FBBB /* comment.png in Resources */,
 				4C9C675D236E47ED00CAAD0B /* LaunchScreen.storyboard in Resources */,
 				4C9C6765236E4A4100CAAD0B /* GoogleService-Info.plist in Resources */,
 				4C9C675A236E47ED00CAAD0B /* Preview Assets.xcassets in Resources */,
 				4C9C6757236E47ED00CAAD0B /* Assets.xcassets in Resources */,
+				4C7E9109237503210034FBBB /* transparent-heart-icon-22.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +281,7 @@
 				4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */,
 				4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */,
 				4C9C6755236E47EC00CAAD0B /* ContentView.swift in Sources */,
+				4C7E910B237509AF0034FBBB /* User.swift in Sources */,
 				4C04FD4C2370E68C001A3669 /* Post.swift in Sources */,
 				4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */,
 				4C9C6767236E52B800CAAD0B /* PostCard.swift in Sources */,
