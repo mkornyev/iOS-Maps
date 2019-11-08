@@ -12,6 +12,7 @@
 		4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C04FD4F237200CD001A3669 /* PostViewModel.swift */; };
 		4C7E910B237509AF0034FBBB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E910A237509AF0034FBBB /* User.swift */; };
 		4C7E910D237532130034FBBB /* images in Resources */ = {isa = PBXBuildFile; fileRef = 4C7E910C237532130034FBBB /* images */; };
+		4C7E91122375358C0034FBBB /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E91112375358C0034FBBB /* PostCard.swift */; };
 		4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */; };
 		4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */; };
 		4C9C6753236E47EC00CAAD0B /* tripbook_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C6751236E47EC00CAAD0B /* tripbook_app.xcdatamodeld */; };
@@ -20,7 +21,6 @@
 		4C9C675A236E47ED00CAAD0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6759236E47ED00CAAD0B /* Preview Assets.xcassets */; };
 		4C9C675D236E47ED00CAAD0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */; };
 		4C9C6765236E4A4100CAAD0B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */; };
-		4C9C6767236E52B800CAAD0B /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C6766236E52B800CAAD0B /* PostCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +29,7 @@
 		4C04FD4F237200CD001A3669 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		4C7E910A237509AF0034FBBB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4C7E910C237532130034FBBB /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		4C7E91112375358C0034FBBB /* PostCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCard.swift; sourceTree = "<group>"; };
 		4C9C674A236E47EC00CAAD0B /* tripbook-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tripbook-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,7 +40,6 @@
 		4C9C675C236E47ED00CAAD0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C9C675E236E47ED00CAAD0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		4C9C6766236E52B800CAAD0B /* PostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostCard.swift; path = ../PostCard.swift; sourceTree = "<group>"; };
 		5625A2544F9589AABC6E944B /* Pods_tripbook_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tripbook_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		633367DD27C41920F996FA33 /* Pods-tripbook-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tripbook-app.release.xcconfig"; path = "Target Support Files/Pods-tripbook-app/Pods-tripbook-app.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,7 +76,7 @@
 		4C7E90F22374A2FA0034FBBB /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4C9C6766236E52B800CAAD0B /* PostCard.swift */,
+				4C7E91112375358C0034FBBB /* PostCard.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -265,10 +265,10 @@
 				4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */,
 				4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */,
 				4C9C6755236E47EC00CAAD0B /* ContentView.swift in Sources */,
+				4C7E91122375358C0034FBBB /* PostCard.swift in Sources */,
 				4C7E910B237509AF0034FBBB /* User.swift in Sources */,
 				4C04FD4C2370E68C001A3669 /* Post.swift in Sources */,
 				4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */,
-				4C9C6767236E52B800CAAD0B /* PostCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
