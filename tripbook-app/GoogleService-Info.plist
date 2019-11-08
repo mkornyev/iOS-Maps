@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>582660477916-t5tgdet77423ct509p7jnl19cgp2m5u6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.582660477916-t5tgdet77423ct509p7jnl19cgp2m5u6</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCEDDThI0dbYkm7OHoa3KApfm_LpTNlFbQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>582660477916</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>JF.tripbook-app</string>
+	<key>PROJECT_ID</key>
+	<string>tripbook-489c8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tripbook-489c8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:582660477916:ios:818e1199f52ab527b7b519</string>
+	<key>DATABASE_URL</key>
+	<string>https://tripbook-489c8.firebaseio.com</string>
+</dict>
+</plist>
