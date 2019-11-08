@@ -31,6 +31,7 @@ struct PostCard: View {
             .overlay(Circle().stroke(Color.white, lineWidth: 2))
             
           Text(post.username)
+            .font(.body)
             .fontWeight(.bold)
   
         }
@@ -53,7 +54,7 @@ struct PostCard: View {
         HStack(){
           Text(post.username)
             .fontWeight(.bold)
-          
+            .font(.body)
           Text(post.post_annotation)
             .font(.headline)
             .fontWeight(.regular)

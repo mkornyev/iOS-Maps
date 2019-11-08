@@ -12,6 +12,7 @@
 		4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C04FD4F237200CD001A3669 /* PostViewModel.swift */; };
 		4C7E910B237509AF0034FBBB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E910A237509AF0034FBBB /* User.swift */; };
 		4C7E910D237532130034FBBB /* images in Resources */ = {isa = PBXBuildFile; fileRef = 4C7E910C237532130034FBBB /* images */; };
+		4C7E91142375F5CE0034FBBB /* firebase_actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E91132375F5CE0034FBBB /* firebase_actions.swift */; };
 		4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */; };
 		4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */; };
 		4C9C6753236E47EC00CAAD0B /* tripbook_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C6751236E47EC00CAAD0B /* tripbook_app.xcdatamodeld */; };
@@ -38,6 +39,7 @@
 		4C04FD4F237200CD001A3669 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		4C7E910A237509AF0034FBBB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4C7E910C237532130034FBBB /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		4C7E91132375F5CE0034FBBB /* firebase_actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = firebase_actions.swift; sourceTree = "<group>"; };
 		4C9C674A236E47EC00CAAD0B /* tripbook-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tripbook-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				4C9C6751236E47EC00CAAD0B /* tripbook_app.xcdatamodeld */,
 				4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */,
 				4C9C6758236E47ED00CAAD0B /* Preview Content */,
+				4C7E91132375F5CE0034FBBB /* firebase_actions.swift */,
 			);
 			path = "tripbook-app";
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C7E91142375F5CE0034FBBB /* firebase_actions.swift in Sources */,
 				4C9C6753236E47EC00CAAD0B /* tripbook_app.xcdatamodeld in Sources */,
 				50CC79552375B45600017FE5 /* TripData.swift in Sources */,
 				4C04FD50237200CD001A3669 /* PostViewModel.swift in Sources */,
