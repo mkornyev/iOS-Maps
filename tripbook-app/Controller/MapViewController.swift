@@ -176,7 +176,7 @@ class MapViewController: UIViewController {
       
       let alert = UIAlertController(title: "Are you sure?", message: "If you post your trip, it will have to end.", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Yep, post it!", style: .default, handler: {item in
-          let modalViewController = ModalViewController()
+        let modalViewController = ModalViewController()
           modalViewController.modalPresentationStyle = .overFullScreen
           self.present(modalViewController, animated: true, completion: nil)
       }))

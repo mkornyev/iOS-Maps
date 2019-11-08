@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 
-func createPost(id: String, date: Timestamp, post_annotation: String, trip: DocumentReference, user: DocumentReference, post_images: [String]) {
+func createPost(id: String, date: Date, post_annotation: String, trip: String, user: String, post_images: [String]) {
   db.collection("posts").document(id).setData([
     "date": date,
     "post_annotation": post_annotation,
