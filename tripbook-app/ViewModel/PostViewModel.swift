@@ -15,7 +15,7 @@ import Combine
 class PostViewModel : ObservableObject, Identifiable {
   @Published var posts : [Post] = []
   var db: Firestore!
-  
+  private var count = 1
   init() {
     let settings = FirestoreSettings()
     Firestore.firestore().settings = settings
@@ -30,13 +30,18 @@ class PostViewModel : ObservableObject, Identifiable {
             if let u = post.data()["user"] as? DocumentReference {
               u.getDocument { (user, err) in
                 if let user = user, user.exists {
-                  let f = user.data()!["fname"]!
-                  print(f)
+                  let f = user.data()!["fname"] as! String
+                  let l = user.data()!["lname"] as! String
+                  let temp = Post(id: post.documentID,  post_annotation: post.data()["post_annotation"] as! String, post_images: ["Landscape" + String(self.count)], date: post.data()["date"] as! Timestamp, username: f + " " + l, profile_pic: "Profile_pic" + String(self.count))
+                  self.posts.append(temp)
+                  self.count += 1
+                }
+                else {
+                  print(err)
                 }
               }
             }
-            let temp = Post(id: post.documentID, tagline: post.data()["tagline"] as! String, post_annotation: post.data()["post_annotation"] as! String, post_images: [""], date: post.data()["date"] as! Timestamp)
-            self.posts.append(temp)
+            
           }
       }
       
