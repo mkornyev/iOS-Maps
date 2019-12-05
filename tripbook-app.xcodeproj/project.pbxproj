@@ -156,11 +156,11 @@
 		50CC794B2375B3B800017FE5 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */,
 				50CC794D2375B3B800017FE5 /* ProfileView.swift */,
 				50CC794E2375B3B800017FE5 /* CardView.swift */,
 				50CC794F2375B3B800017FE5 /* PostCard.swift */,
 				50CC79562375B4E700017FE5 /* IntroAddTripView.swift */,
+				50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -368,6 +368,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UAZ374FD6P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -428,6 +429,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = UAZ374FD6P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -461,7 +463,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "JF.tripbook-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "MK.tripbook-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -481,7 +483,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "JF.tripbook-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "MK.tripbook-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

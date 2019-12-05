@@ -26,7 +26,7 @@ class PostViewModel : ObservableObject, Identifiable {
         print("Error getting documents: \(err)")
       } else {
           for post in querySnapshot!.documents {
-            print("\(post.documentID) => \(post.data())")
+//            print("\(post.documentID) => \(post.data())")
             if let u = post.data()["user"] as? DocumentReference {
               u.getDocument { (user, err) in
                 if let user = user, user.exists {

@@ -39,7 +39,7 @@ class Location: NSObject {
       
       self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     } else {
-      print("Unable to grab location")
+      print("\nERROR: Unable to grab location")
       self.coordinate = nil
     }
   }

@@ -10,46 +10,25 @@ import UIKit
 import MapKit
 import FirebaseFirestore
 import Floaty
-//import CodableFirebase
 
 class MapViewController: UIViewController {
   // MARK: - Passed State Vars
-
-  var tripID: String
-  var editView: Bool
-  var loadTrip: Bool
-  
-  // MARK: - Overlay vars
+//  var tripID: String
+//  var editView: Bool
+//  var loadTrip: Bool
+  private var LATENCY:Double = 2.5
   
   // MARK: - Models
   
   var location: Location = Location()
   var mapView: MKMapView!
-  var tripData = TripData()
-  
-  // Dummy vars in place of tripData
-  var from_location = ""
-  var to_location: String? = nil
-  var distance = 0
-  var trip_data: [CLLocationCoordinate2D] = []
-  var start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
-  var end_date: Date? = nil
-  var visible = false
-  var user = ""
+  var floatyButtons: Floaty!
+  var tripData:TripData
   
   // MARK: - Inits
   
-  init(tripID: String, editView: Bool, loadTrip: Bool) {
-    self.tripID = tripID
-    self.editView = editView
-    self.loadTrip = loadTrip
-    
-//    if loadTrip {
-//      syncDispatch.notify(queue: .main) {
-//        self.loadTripData()
-//      }
-//    }
-    
+  init(tripData: TripData) {
+    self.tripData = tripData
     super.init(nibName: nil, bundle: nil) // Must come last
   }
   
@@ -59,54 +38,50 @@ class MapViewController: UIViewController {
   
   // MARK: - Methods
   
+//  override func viewWillAppear(_ animated: Bool) {
+//    super.viewWillAppear(animated)
+//
+//    // NO ONGOING TRIP
+//    if self.tripData?.from_location == "" {
+//      // Show create trip annotations
+//      print("NO ONGOING TRIP")
+//
+////      print("init data: \(self.tripData)")
+////      self.loadTripData()
+////      print("init data: \(self.tripData)")
+//
+//      // The above async call takes too long (it only populates the data after viewDidLoad runs)
+////       so I populate data directly:
+////      self.tripData = populateRoute()
+//    } else {
+//      print("ONGOING TRIP")
+//
+//      drawPolyline(self.tripData.trip_data) // Draws polyline from data, sets an annotation endpoint
+//      centerMap(onUser: false, data: self.tripData.trip_data) // Center on trip
+//      showButtonTools() // Show edit annotations
+//    }
+//  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
-    if loadTrip {
-//      self.loadTripData()
-      
-      // The above async call takes too long (it only populates the data after viewDidLoad runs)
-      // so I populate data directly:
-      print("init data: \(self.tripData)")
-      self.tripData = populateRoute()
-      print("loaded data: \(self.tripData)")
-    } else {
-//      self.loadTripData(self.tripID)
-      
-      self.tripData = populateRoute(self.tripID)
-    }
-  }
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
     
     self.mapView = MKMapView()
     frameMapView()
     self.view.addSubview(mapView)
     
-    let data = getRouteData()
-//    self.tripData = populateRoute()
-    // REMOVE populate call, replace w/tripData
-//    if self.tripData.user == "" { // No trip loaded
-    if false { // No trip loaded
-      centerMap(onUser: true, data: data) // Sets span & region, centers map, and sets an annotation startpoint
-      print("NO USER FOUND")
-      // provide basic map tools
-    }
-//    else if populateRoute().end_date == nil { // Ongoing trip
-    else if true { // Ongoing trip
-      
-      self.tripData.to_location = nil
-      self.tripData.from_location = "Morewood"
-      
-      drawPolyline(data) // Draws polyline from data, sets an annotation endpoint
-      centerMap(onUser: false, data: data) // Center on trip
-      showButtonTools() // Show edit annotations
-    }
-    else { // Posted trip
-      drawPolyline(data)
-      centerMap(onUser: false, data: data)
-      // show annotations (ie label overlay)
+    DispatchQueue.main.asyncAfter(deadline: .now() + LATENCY) {
+      if self.tripData.from_location == "" {
+        // Show create trip annotations
+        print("NO ONGOING TRIP")
+        self.centerMap(onUser: true) // Sets span & region, centers map, and sets an annotation startpoint
+        // self.showCreateTools() // Show new trip annotations
+      } else {
+        print("ONGOING TRIP")
+        self.drawPolyline(self.tripData.trip_data) // Draws polyline from data, sets an annotation endpoint
+        self.centerMap(onUser: false) // Center on trip
+        self.showButtonTools() // Show edit annotations
+        //self.showDescripriveOverlay() // Shows map annotations 
+      }
     }
     
     mapView.delegate = self
@@ -114,7 +89,7 @@ class MapViewController: UIViewController {
   
   func frameMapView() -> Void {
     let leftMargin:CGFloat = 0
-    let topMargin:CGFloat = -20
+    let topMargin:CGFloat = 0
     let mapWidth:CGFloat = view.frame.size.width
     let mapHeight:CGFloat = view.frame.size.height
         
@@ -124,7 +99,7 @@ class MapViewController: UIViewController {
   }
   
   // Throws alert if no location recieved
-  func centerMap(onUser: Bool, data: [CLLocationCoordinate2D]) -> Void {
+  func centerMap(onUser: Bool) -> Void {
     location.getCurrentLocation()
     
     if onUser {
@@ -142,8 +117,8 @@ class MapViewController: UIViewController {
         // **ON DISMISS: Navigate back to Feed View
       }
     } else {
-      // REMOVE & replace:
-//      let data = self.tripData.trip_data!
+      let data = self.tripData.trip_data
+      
       let diff1 = abs(data.first!.latitude - data.last!.latitude) * 1.8
       let diff2 = abs(data.first!.longitude - data.last!.longitude) * 1.8
       
@@ -158,33 +133,37 @@ class MapViewController: UIViewController {
   }
   
   func showButtonTools() -> Void {
-    let floaty = Floaty()
-    floaty.addItem("Add Text", icon: UIImage(named: "TextIcon")!, handler: { item in
+    self.floatyButtons = Floaty()
+    floatyButtons.addItem("Add Text", icon: UIImage(named: "TextIcon")!, handler: { item in
         let alert = UIAlertController(title: "Text Annotation", message: "Drag and stick this annotation onto your trip", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Got it!", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-        floaty.close()
+        self.floatyButtons.close()
     })
     
-    floaty.addItem("Add Image", icon: UIImage(named: "ImageIcon")!)
+//    floaty.addItem("Add Image", icon: UIImage(named: "ImageIcon")!)
+//
+//    floaty.addItem("Share Trip", icon: UIImage(named: "ArrowIcon")!, handler: { item in
+//      // stop trip, push to Firebase
+//      // show Share trip modal
+//      // push post to Firebase
+//      // showPost
+//
+//      let alert = UIAlertController(title: "Are you sure?", message: "If you post your trip, it will have to end.", preferredStyle: .alert)
+//      alert.addAction(UIAlertAction(title: "Yep, post it!", style: .default, handler: {item in
+//        let modalViewController = ModalViewController()
+//          modalViewController.modalPresentationStyle = .overFullScreen
+//          self.present(modalViewController, animated: true, completion: nil)
+//      }))
+//      alert.addAction(UIAlertAction(title: "Nope, wait up", style: .default, handler: { item in floaty.close() }))
+//      self.present(alert, animated: true, completion: nil)
+//    })
     
-    floaty.addItem("Share Trip", icon: UIImage(named: "ArrowIcon")!, handler: { item in
-      // stop trip, push to Firebase
-      // show Share trip modal
-      // push post to Firebase
-      // showPost
-      
-      let alert = UIAlertController(title: "Are you sure?", message: "If you post your trip, it will have to end.", preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "Yep, post it!", style: .default, handler: {item in
-        let modalViewController = ModalViewController()
-          modalViewController.modalPresentationStyle = .overFullScreen
-          self.present(modalViewController, animated: true, completion: nil)
-      }))
-      alert.addAction(UIAlertAction(title: "Nope, wait up", style: .default, handler: { item in floaty.close() }))
-      self.present(alert, animated: true, completion: nil)
-    })
+    view.addSubview(floatyButtons)
+    self.mapView.addSubview(floatyButtons)
     
-    self.view.addSubview(floaty)
+    print("\n\nADDED FLOATY!!!! ------------\n\n")
+    
   }
 }
 
@@ -204,89 +183,6 @@ class MapViewController: UIViewController {
 //  }
 //}
 
-extension MapViewController {
-  
-  func loadTripData(_ tripID: String = "JCzEKCv9XGglmZyq8V0J") -> Void {
-    
-    let myGroup = DispatchGroup()
-    myGroup.enter()
-    
-    let db = Firestore.firestore()
-  
-    let locationsRef = db.collection("trips")
-    locationsRef.getDocuments { (querySnapshot, err) in
-      if let err = err {
-          print("Error receiving Firestore snapshot: \(err)")
-      } else {
-        for document in querySnapshot!.documents {
-          
-          // print("\(document.documentID) => \(document.data())")
-          
-          
-          if document.documentID == tripID {
-            for (key, value) in document.data() {
-              // If key not present, tripData field is not initialized
-              self.switchCase(key: key, value: value)
-            }
-          }
-        }
-      }
-    }
-    myGroup.leave() //// When your task completes
-    myGroup.notify(queue: DispatchQueue.main) {
-      print("!!!!!!!!!!!!    DONE    !!!!!!!!!!!!")
-    }
-    
-    print("***********Trip data (end of loadTripData)**************")
-    print(self.tripData.trip_data)
-    print("**********************************")
-  }
-  
-  private func switchCase(key: String, value: Any) {
-    switch key {
-      case "user":
-        self.tripData.user = value as! String
-        
-      case "from_location":
-        self.tripData.from_location = value as! String
-      
-      case "to_location":
-        self.tripData.to_location = value as? String
-      
-      case "distance":
-        self.tripData.distance = value as! Int
-        
-      case "start_date":
-        let t = value as! Timestamp
-        self.tripData.start_date = t.dateValue()
-        
-      case "end_date":
-        let t = value as! Timestamp
-        self.tripData.end_date = t.dateValue()
-      
-      case "visible":
-        self.tripData.visible = value as! Bool
-      
-      case "trip_data":
-        let rawArray = value as! [GeoPoint]
-        self.tripData.trip_data = []
-        
-        for point in rawArray {
-          let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
-          self.tripData.trip_data.append(coord)
-        }
-      
-        print("***********Trip data (switch)**************")
-        print(self.tripData.trip_data)
-        print(value)
-        print("**********************************")
-      
-      default:
-        print("Invalid firebase token provided: /MapVC.swift in loadTripData()")
-    }
-  }
-  
-}
 
 // MARK: - MapView Delegate, Polyline Renderer
 
@@ -299,8 +195,8 @@ extension MapViewController: MKMapViewDelegate {
     
     // Polyline styles
     let polylineRenderer = MKPolylineRenderer(overlay: polyline)
-    polylineRenderer.strokeColor = .systemGreen
-    polylineRenderer.lineWidth = 4
+    polylineRenderer.strokeColor = .systemBlue
+    polylineRenderer.lineWidth = 6
     return polylineRenderer
   }
   
@@ -397,98 +293,104 @@ extension MapViewController: MKMapViewDelegate {
 //    print("++++++++++++++++++++++++++++")
 //  }
 //}
-func populateRoute(_ tripID: String = "") -> TripData {
-  let tripCoords: [[Double]]
-  let data = TripData()
-
-  if tripID == "" {
-    data.from_location = "Morewood"
-    data.to_location = nil
-    data.distance = 1
-    data.start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
-    data.end_date = nil
-    data.visible = false
-    data.user = "jTwrnfSpEiOFVmnYyFtg"
-    data.trip_data = []
-    //  var tripImages: [CLLocationCoordinate2D: String]
-    //  var tripAnnotations: [CLLocationCoordinate2D: String]
-
-    tripCoords = [
-      [40.4446433, -79.9430155],
-      [40.4446515, -79.943509],
-      [40.4446351, -79.9441098],
-      [40.4445861, -79.9449574],
-      [40.4445453, -79.9457942],
-      [40.4445372, -79.946674],
-      [40.4450597, -79.9464809],
-      [40.4455986, -79.9466311],
-      [40.4462028, -79.9469315],
-      [40.4467988, -79.9471461],
-      [40.4472071, -79.9473714],
-    ]
-  } else {
-    data.from_location = "x"
-    data.to_location = "y"
-    data.distance = 4
-    data.start_date = Date(timeIntervalSinceReferenceDate: -13456789.0)
-    data.end_date = Date(timeIntervalSinceReferenceDate: -13453789.0)
-    data.visible = true
-    data.user = "jTwrnfSpEiOFVmnYyFtg"
-    data.trip_data = []
-    //  var tripImages: [CLLocationCoordinate2D: String]
-    //  var tripAnnotations: [CLLocationCoordinate2D: String]
-
-    tripCoords = [
-      [40.4446433, -79.9430155],
-      [40.4446515, -79.943509],
-      [40.4446351, -79.9441098],
-      [40.4445861, -79.9449574],
-      [40.4445453, -79.9457942],
-      [40.4445372, -79.946674],
-      [40.4450597, -79.9464809],
-      [40.4455986, -79.9466311],
-      [40.4462028, -79.9469315],
-      [40.4467988, -79.9471461],
-      [40.4472071, -79.9473714],
-    ]
-  }
-
-  for arr in tripCoords {
-    let coord = CLLocationCoordinate2D(latitude: arr[0], longitude: arr[1])
-    data.trip_data.append(coord)
-  }
-
-  print("++++++++++++++++ in populateRoute ++++++++++++")
-  print(data.user)
-  print(data.trip_data)
-  print("++++++++++++++++++++++++++++")
-
-  return data
-}
-
-func getRouteData() -> [CLLocationCoordinate2D] {
-  let tripCoords: [[Double]]
-  var retCoords: [CLLocationCoordinate2D] = []
-
-  tripCoords = [
-    [40.4446433, -79.9430155],
-    [40.4446515, -79.943509],
-    [40.4446351, -79.9441098],
-    [40.4445861, -79.9449574],
-    [40.4445453, -79.9457942],
-    [40.4445372, -79.946674],
-    [40.4450597, -79.9464809],
-    [40.4455986, -79.9466311],
-    [40.4462028, -79.9469315],
-    [40.4467988, -79.9471461],
-    [40.4472071, -79.9473714],
-  ]
-  for arr in tripCoords {
-    let coord = CLLocationCoordinate2D(latitude: arr[0], longitude: arr[1])
-    retCoords.append(coord)
-  }
-
-  return retCoords
-}
 
 
+
+
+
+
+//func populateRoute(_ tripID: String = "") -> TripData {
+//  let tripCoords: [[Double]]
+//  let data = TripData()
+//
+//  if tripID == "" {
+//    data.from_location = "Morewood"
+//    data.to_location = nil
+//    data.distance = 1
+//    data.start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
+//    data.end_date = nil
+//    data.visible = false
+//    data.user = "jTwrnfSpEiOFVmnYyFtg"
+//    data.trip_data = []
+//    //  var tripImages: [CLLocationCoordinate2D: String]
+//    //  var tripAnnotations: [CLLocationCoordinate2D: String]
+//
+//    tripCoords = [
+//      [40.4446433, -79.9430155],
+//      [40.4446515, -79.943509],
+//      [40.4446351, -79.9441098],
+//      [40.4445861, -79.9449574],
+//      [40.4445453, -79.9457942],
+//      [40.4445372, -79.946674],
+//      [40.4450597, -79.9464809],
+//      [40.4455986, -79.9466311],
+//      [40.4462028, -79.9469315],
+//      [40.4467988, -79.9471461],
+//      [40.4472071, -79.9473714],
+//    ]
+//  } else {
+//    data.from_location = "x"
+//    data.to_location = "y"
+//    data.distance = 4
+//    data.start_date = Date(timeIntervalSinceReferenceDate: -13456789.0)
+//    data.end_date = Date(timeIntervalSinceReferenceDate: -13453789.0)
+//    data.visible = true
+//    data.user = "jTwrnfSpEiOFVmnYyFtg"
+//    data.trip_data = []
+//    //  var tripImages: [CLLocationCoordinate2D: String]
+//    //  var tripAnnotations: [CLLocationCoordinate2D: String]
+//
+//    tripCoords = [
+//      [40.4446433, -79.9430155],
+//      [40.4446515, -79.943509],
+//      [40.4446351, -79.9441098],
+//      [40.4445861, -79.9449574],
+//      [40.4445453, -79.9457942],
+//      [40.4445372, -79.946674],
+//      [40.4450597, -79.9464809],
+//      [40.4455986, -79.9466311],
+//      [40.4462028, -79.9469315],
+//      [40.4467988, -79.9471461],
+//      [40.4472071, -79.9473714],
+//    ]
+//  }
+//
+//  for arr in tripCoords {
+//    let coord = CLLocationCoordinate2D(latitude: arr[0], longitude: arr[1])
+//    data.trip_data.append(coord)
+//  }
+//
+//  print("++++++++++++++++ in populateRoute ++++++++++++")
+//  print(data.user)
+//  print(data.trip_data)
+//  print("++++++++++++++++++++++++++++")
+//
+//  return data
+//}
+//
+//func getRouteData() -> [CLLocationCoordinate2D] {
+//  let tripCoords: [[Double]]
+//  var retCoords: [CLLocationCoordinate2D] = []
+//
+//  tripCoords = [
+//    [40.4446433, -79.9430155],
+//    [40.4446515, -79.943509],
+//    [40.4446351, -79.9441098],
+//    [40.4445861, -79.9449574],
+//    [40.4445453, -79.9457942],
+//    [40.4445372, -79.946674],
+//    [40.4450597, -79.9464809],
+//    [40.4455986, -79.9466311],
+//    [40.4462028, -79.9469315],
+//    [40.4467988, -79.9471461],
+//    [40.4472071, -79.9473714],
+//  ]
+//  for arr in tripCoords {
+//    let coord = CLLocationCoordinate2D(latitude: arr[0], longitude: arr[1])
+//    retCoords.append(coord)
+//  }
+//
+//  return retCoords
+//}
+//
+//

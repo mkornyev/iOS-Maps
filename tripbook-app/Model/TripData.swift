@@ -9,9 +9,12 @@ import FirebaseFirestore
 import CodableFirebase
 
 extension GeoPoint: GeoPointType {}
+extension DocumentReference: DocumentReferenceType {}
 
 class TripData {
 //  let db = Firestore.firestore()
+  
+  // MARK: - Trip Attributes
   
   var from_location: String
   var to_location: String?
@@ -21,8 +24,8 @@ class TripData {
 //  var tripAnnotations: [CLLocationCoordinate2D: String]
   var start_date: Date
   var end_date: Date?
-  var visible: Bool
-  var user: String
+//  var visible: Bool
+  var user: DocumentReference?
   
   init() {
     from_location = ""
@@ -31,9 +34,98 @@ class TripData {
     trip_data = []
     start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
     end_date = nil
-    visible = false
-    user = ""
+//    visible = false
+    user = nil
   }
+
+  // MARK: - Methods
+  
+  // Populates the tripData struct given a valid tripID
+  public func loadTripData(_ tripID: String = "JCzEKCv9XGglmZyq8V0J") -> Void {
+    
+//    let myGroup = DispatchGroup()
+//    myGroup.enter()
+    
+    let db = Firestore.firestore()
+  
+    let locationsRef = db.collection("trips")
+    locationsRef.getDocuments { (querySnapshot, err) in
+      if let err = err {
+          print("ERROR: Couldn't recieve Firestore snapshot: \(err)")
+      } else {
+        for document in querySnapshot!.documents {
+//          print("\(document.documentID) => \(document.data())")
+
+          if document.documentID == tripID {
+            for (key, value) in document.data() {
+              self.switchCase(key: key, value: value)
+            }
+          }
+        }
+      }
+//      if let document = document, document.exists {
+//         for (key, value) in document.data()! {
+//           self.switchCase(key: key, value: value)
+//         }
+//      } else {
+//        print("ERROR: Couldn't recieve Firestore snapshot: \(err) | loadTripData() in TripData")
+//      }
+      
+    }
+//    myGroup.leave() //// When your task completes
+//    myGroup.notify(queue: DispatchQueue.main) {
+//      print("!!!!!!!!!!!!    DONE    !!!!!!!!!!!!")
+//    }
+    
+//    print("***********Trip data (end of loadTripData)**************")
+//    print(self.tripData.trip_data)
+//    print("**********************************")
+  }
+  
+  private func switchCase(key: String, value: Any) {
+    switch key {
+      case "user":
+        self.user = value as! DocumentReference
+        
+      case "from_location":
+        self.from_location = value as! String
+      
+      case "to_location":
+        self.to_location = value as? String
+      
+      case "distance":
+        self.distance = value as! Int
+        
+      case "start_date":
+        let t = value as! Timestamp
+        self.start_date = t.dateValue()
+        
+      case "end_date":
+        let t = value as! Timestamp
+        self.end_date = t.dateValue()
+      
+//      case "visible":
+//        self.visible = value as! Bool
+      
+      case "trip_data":
+        let rawArray = value as! [GeoPoint]
+        self.trip_data = []
+        
+        for point in rawArray {
+          let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+          self.trip_data.append(coord)
+        }
+      
+//        print("***********Trip data (switch)**************")
+//        print(self.trip_data)
+//        print(value)
+//        print("**********************************")
+      
+      default:
+        print("Invalid firebase token provided: /Model/TripData in loadTripData()")
+    }
+  }
+
 }
 
 
