@@ -69,7 +69,7 @@ class MapViewController: UIViewController {
     frameMapView()
     self.view.addSubview(mapView)
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + LATENCY) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + LATENCY) { // Shitty design but our only option
       if self.tripData.from_location == "" {
         // Show create trip annotations
         print("NO ONGOING TRIP")

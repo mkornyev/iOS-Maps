@@ -20,7 +20,8 @@ struct ContentView: View {
     // Loads trip for current user
     private func loadTrip() -> Void {
       let db = Firestore.firestore()
-      let userRef = Firestore.firestore().collection("users").document("jTwrnfSpEiOFVmnYyFtg")
+      let userRefString = "jTwrnfSpEiOFVmnYyFtg" // WILL ADD A PLIST VAL FOR THIS
+      let userRef = Firestore.firestore().collection("users").document(userRefString) 
       let mostRecentTripRef = db.collection("trips").whereField("user", isEqualTo: userRef).order(by: "start_date", descending: true).limit(to: 1)
       
       mostRecentTripRef.getDocuments { (querySnapshot, err) in
