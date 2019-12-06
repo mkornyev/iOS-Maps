@@ -31,6 +31,8 @@
 		50CC795B2375B99100017FE5 /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794F2375B3B800017FE5 /* PostCard.swift */; };
 		50CDD02A2399C90C00E33EEE /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CDD0292399C90C00E33EEE /* ImageViewController.swift */; };
 		6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */; };
+		6CC7E78A239A69A000770CF2 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC7E789239A69A000770CF2 /* FriendsView.swift */; };
+		6CC7E78C239A6A5F00770CF2 /* FriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC7E78B239A6A5F00770CF2 /* FriendsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,8 @@
 		5625A2544F9589AABC6E944B /* Pods_tripbook_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tripbook_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		633367DD27C41920F996FA33 /* Pods-tripbook-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tripbook-app.release.xcconfig"; path = "Target Support Files/Pods-tripbook-app/Pods-tripbook-app.release.xcconfig"; sourceTree = "<group>"; };
 		6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		6CC7E789239A69A000770CF2 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		6CC7E78B239A6A5F00770CF2 /* FriendsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,7 @@
 		4C04FD4E237200AB001A3669 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				6CC7E78B239A6A5F00770CF2 /* FriendsViewModel.swift */,
 				4C04FD4F237200CD001A3669 /* PostViewModel.swift */,
 				6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */,
 			);
@@ -156,8 +161,9 @@
 		50CC794B2375B3B800017FE5 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				50CC794D2375B3B800017FE5 /* ProfileView.swift */,
 				50CC794E2375B3B800017FE5 /* CardView.swift */,
+				6CC7E789239A69A000770CF2 /* FriendsView.swift */,
+				50CC794D2375B3B800017FE5 /* ProfileView.swift */,
 				50CC794F2375B3B800017FE5 /* PostCard.swift */,
 				50CC79562375B4E700017FE5 /* IntroAddTripView.swift */,
 				50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */,
@@ -314,6 +320,8 @@
 				6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */,
 				4C7E910B237509AF0034FBBB /* User.swift in Sources */,
 				4C04FD4C2370E68C001A3669 /* Post.swift in Sources */,
+				6CC7E78A239A69A000770CF2 /* FriendsView.swift in Sources */,
+				6CC7E78C239A6A5F00770CF2 /* FriendsViewModel.swift in Sources */,
 				50CDD02A2399C90C00E33EEE /* ImageViewController.swift in Sources */,
 				50CC79592375B98C00017FE5 /* ProfileView.swift in Sources */,
 				4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */,
