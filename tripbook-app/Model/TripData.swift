@@ -21,12 +21,16 @@ class TripData {
   var to_location: String?
   var distance: Int
   var trip_data: [CLLocationCoordinate2D]
+  var image_coordinates: [CLLocationCoordinate2D]
+  var images: [String]
+  var annotation_coordinates: [CLLocationCoordinate2D]
+  var annotations: [String]
 //  var tripImages: [CLLocationCoordinate2D: String]
 //  var tripAnnotations: [CLLocationCoordinate2D: String]
   var start_date: Date
   var end_date: Date?
 //  var visible: Bool
-  var user: DocumentReference?
+  var user: String
   
   init() {
     trip_ref = ""
@@ -34,10 +38,14 @@ class TripData {
     to_location = nil
     distance = 0
     trip_data = []
+    image_coordinates = []
+    images = []
+    annotation_coordinates = []
+    annotations = []
     start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
     end_date = nil
 //    visible = false
-    user = nil
+    user = ""
   }
 
   // MARK: - Methods
@@ -88,7 +96,8 @@ class TripData {
   private func switchCase(key: String, value: Any) {
     switch key {
       case "user":
-        self.user = value as! DocumentReference
+        let ref = value as! DocumentReference
+        self.user = ref.documentID
         
       case "from_location":
         self.from_location = value as! String
@@ -112,17 +121,35 @@ class TripData {
       
       case "trip_data":
         let rawArray = value as! [GeoPoint]
-        self.trip_data = []
         
         for point in rawArray {
           let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
           self.trip_data.append(coord)
         }
       
-//        print("***********Trip data (switch)**************")
-//        print(self.trip_data)
-//        print(value)
-//        print("**********************************")
+      case "image_coordinates":
+        let rawArray = value as! [GeoPoint]
+      
+        for point in rawArray {
+          let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+          self.image_coordinates.append(coord)
+        }
+      
+      case "images":
+        let rawArray = value as! [String]
+        self.images = rawArray
+      
+      case "annotation_coordinates":
+        let rawArray = value as! [GeoPoint]
+      
+        for point in rawArray {
+          let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+          self.annotation_coordinates.append(coord)
+        }
+      
+      case "annotations":
+        let rawArray = value as! [String]
+        self.annotations = rawArray
       
       default:
         print("Invalid firebase token provided: /Model/TripData in loadTripData()")

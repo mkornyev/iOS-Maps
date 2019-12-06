@@ -36,8 +36,16 @@ struct ContentView: View {
           if querySnapshot!.documents.count == 0 { print("ERROR: Did not get any documents for filter | loadTrip() in ContentView") }
           
           for document in querySnapshot!.documents {
-            self.tripData.loadTripData(document.documentID)
-            print("\n\nGOT TRIP STRING: \(document.documentID)\n\n")
+            if let str = document.data()["to_location"] as? String {
+              if str == "" {
+                print("\n\nGOT TRIP STRING1: \(document.documentID)\n\n")
+                self.tripData.loadTripData(document.documentID)
+              }
+            }
+            else {
+              print("\n\nGOT TRIP STRING2: \(document.documentID)\n\n")
+              self.tripData.loadTripData(document.documentID)
+            }
           }
         }
       }

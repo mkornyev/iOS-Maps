@@ -5,6 +5,8 @@
 //  Created by Max Kornyev on 12/5/19.
 //  Copyright © 2019 67442. All rights reserved.
 //
+//  Huge thanks to @Rebeloper on Youtube for help with this class
+//
 
 import TinyConstraints
 import FirebaseStorage
@@ -321,9 +323,10 @@ class ImageViewController: UIViewController {
         "user": userRef
     ]
     
-    db.collection("trips").document(tripRefString).setData(data) { err in
-        if let err = err {
-          self.presentAlert(title: "Error", message: "Could not upload trip")
+    // FIXED
+    db.collection("posts").addDocument(data: data) { err in
+      if err != nil {
+          self.presentAlert(title: "Error", message: "Could not upload post")
         } else {
             self.navigationController?.popToRootViewController(animated: true)
         }
@@ -355,7 +358,7 @@ extension ImageViewController: UINavigationControllerDelegate, UIImagePickerCont
             return
         }
         imageView.image = selectedImage
-        imagePickerController.dismiss(animated: true, completion: {
+        imagePickerController.dismiss(animated: true, completion: { () -> Void in
           self.renderPostForm()
 //          let alert = UIAlertController(title: "Nice photo", message: "Would you like to post your image?", preferredStyle: .alert)
 //
