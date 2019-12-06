@@ -184,8 +184,8 @@ class ImageViewController: UIViewController {
       
       imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
       imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 20).isActive = true
-//      imageView.widthAnchor.constraint(equalToConstant: 400).isActive = true
-//      imageView.heightAnchor.constraint(equalToConstant: 500).isActive = true
+      imageView.widthAnchor.constraint(equalToConstant: (view.frame.width*4)/5).isActive = true
+      imageView.heightAnchor.constraint(equalToConstant: 500).isActive = true
       
       contentStack.translatesAutoresizingMaskIntoConstraints = false
       scrollView.addSubview(contentStack)
@@ -385,14 +385,12 @@ class ImageViewController: UIViewController {
 //            presentAlert(title: "Saved!", message: "Image saved successfully")
 //        }
 //    }
-    
     func presentAlert(title: String, message: String) {
         activityIndicator.stopAnimating()
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
-    
 }
 
 extension ImageViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
@@ -413,7 +411,7 @@ extension ImageViewController: UINavigationControllerDelegate, UIImagePickerCont
           self.renderUploadButton()
         }))
       
-        present(alert, animated: true)
+        present(alert, animated: true, completion: nil)
     }
 }
 
