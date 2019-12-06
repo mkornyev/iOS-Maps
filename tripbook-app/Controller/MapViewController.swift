@@ -192,10 +192,8 @@ extension MapViewController {
   }
  
  @objc func addImageButtonTap(sender: UIButton!) {
-  let imageVC = ImageViewController()
+  let imageVC = ImageViewController(location: tripData.trip_data.last!, tripRefString: tripData.trip_ref)
   imageVC.modalPresentationStyle = .overFullScreen
-//  self.present(imageVC, animated: true, completion: nil)
-//  self.pushViewController(imageVC, animated: true, completion: nil)
   
   self.navigationController?.pushViewController(imageVC, animated: true)
  }

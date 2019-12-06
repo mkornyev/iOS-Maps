@@ -10,6 +10,7 @@ import TinyConstraints
 import FirebaseStorage
 import FirebaseFirestore
 import Kingfisher
+import CoreLocation
 
 struct MyKeys {
     static let imagesFolder = "userImages"
@@ -19,14 +20,13 @@ struct MyKeys {
 }
 
 class ImageViewController: UIViewController {
-  
-    let userRefString = "jTwrnfSpEiOFVmnYyFtg" // WILL ADD A PLIST VAL FOR THIS
     
-    lazy var takePhotoBarButton = UIBarButtonItem(title: "Take a Photo", style: .done, target: self, action: #selector(takePhoto))
-    lazy var selectPhotoBarButton = UIBarButtonItem(title: "Select a Photo", style: .plain, target: self, action: #selector(selectPhoto))
-    var uploadPhotoButton = UIButton(frame: CGRect(x: 75, y: 600, width: 85, height: 35))
-  
+    // MARK: - Image Vars
+    let userRefString = "jTwrnfSpEiOFVmnYyFtg" // WILL ADD A PLIST VAL FOR THIS
+    let lastRecordedLocation: CLLocationCoordinate2D
     var imagePicker = UIImagePickerController()
+    var imageUrl: String = ""
+    var tripRefString: String = ""
     
     lazy var imagePickerController: UIImagePickerController = {
         let controller = UIImagePickerController()
@@ -38,41 +38,243 @@ class ImageViewController: UIViewController {
     lazy var imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
-        iv.backgroundColor = .white
+        iv.backgroundColor = .gray
         return iv
     }()
     
     let activityIndicator = UIActivityIndicatorView(style: .gray)
+  
+    // MARK: - Buttons and Form Vars
+    lazy var takePhotoBarButton = UIBarButtonItem(title: "Take a Photo", style: .done, target: self, action: #selector(takePhoto))
+    lazy var selectPhotoBarButton = UIBarButtonItem(title: "Select a Photo", style: .plain, target: self, action: #selector(selectPhoto))
+//    var uploadPhotoButton = UIButton(frame: CGRect(x: 75, y: 600, width: 250, height: 35))
+  
+    lazy var scrollView: UIScrollView = {
+       let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentSize.height = 2000
+//        view.backgroundColor = UIColor.white
+        
+        return view
+    }()
+  
+    lazy var contentStack: UIStackView = {
+      let stackView = UIStackView(frame:.zero)
+      
+      stackView.axis = .vertical
+      stackView.distribution = .equalSpacing
+      stackView.spacing = 10
+      stackView.backgroundColor = .systemRed
+      
+      return stackView
+    }()
+  
+    lazy var headingLabel: UILabel = {
+//        let label = UILabel(frame: CGRect(x: 0, y: 100, width: view.frame.size.width, height: 100))
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 25)
+        label.text = "Share your photo"
+        label.textColor = .black
+        label.textAlignment = .center
+        label.layer.shadowOffset = CGSize(width: 2, height: 2)
+        label.layer.shadowColor = UIColor.gray.cgColor
+        label.layer.shadowOpacity = 0.5
+        return label
+      }()
+  
+    lazy var annotationLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.text = "Enter a heading for your post:"
+        label.textColor = .black
+        return label
+      }()
+      
+      lazy var annotationText: UITextField =  {
+//        let field = UITextField(frame: CGRect(x: 20, y: 100, width: 300, height: 40))
+        let field = UITextField()
+      
+        field.placeholder = "A catchy caption"
+        field.font = UIFont.systemFont(ofSize: 15)
+        field.textColor = UIColor.blue
+        field.backgroundColor = UIColor.white
+        
+        field.borderStyle = UITextField.BorderStyle.roundedRect
+        field.autocorrectionType = UITextAutocorrectionType.no
+        field.keyboardType = UIKeyboardType.default
+        field.returnKeyType = UIReturnKeyType.done
+        field.clearButtonMode = UITextField.ViewMode.whileEditing
+        field.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        
+        return field
+      }()
+      
+      let summaryLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.text = "Enter a summary:"
+        label.textColor = .black
+        return label
+      }()
+  
+      lazy var summaryText: UITextField =  {
+//        let field = UITextField(frame: CGRect(x: 20, y: 100, width: 300, height: 40))
+        let field = UITextField()
+      
+        field.placeholder = "A scintillating summary"
+        field.font = UIFont.systemFont(ofSize: 15)
+        field.textColor = UIColor.blue
+        field.backgroundColor = UIColor.white
+        
+        field.borderStyle = UITextField.BorderStyle.roundedRect
+        field.autocorrectionType = UITextAutocorrectionType.no
+        field.keyboardType = UIKeyboardType.default
+        field.returnKeyType = UIReturnKeyType.done
+        field.clearButtonMode = UITextField.ViewMode.whileEditing
+        field.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        
+        return field
+      }()
+  
+    // MARK: - Inits
+    init(location: CLLocationCoordinate2D, tripRefString: String) {
+      self.lastRecordedLocation = location
+      self.tripRefString = tripRefString
+      super.init(nibName: nil, bundle: nil) // Must come last
+    }
+  
+    required init?(coder: NSCoder) {
+      fatalError("Failed to init tripData")
+    }
     
+    // MARK: - Methods
+  
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        renderScrollView()
         navigationItem.setLeftBarButtonItems([takePhotoBarButton, selectPhotoBarButton], animated: true)
       
       // add button to screen later
       
         view.backgroundColor = .white
-        view.addSubview(imageView)
-        view.addSubview(activityIndicator)
+//        view.addSubview(imageView)
+//        view.addSubview(activityIndicator)
         imageView.edgesToSuperview()
         activityIndicator.centerInSuperview()
         
-        setButtonStyle()
+        renderScrollView()
     }
   
-    func setButtonStyle() {
-      uploadPhotoButton.setTitle("Add Photo to Trip", for: .normal)
-      uploadPhotoButton.addTarget(self, action: #selector(uploadPhoto), for: .touchUpInside)
+    func renderScrollView() {
+      view.addSubview(scrollView)
       
-      uploadPhotoButton.backgroundColor = .blue
-      uploadPhotoButton.alpha = 0.85
-      uploadPhotoButton.setTitleColor(.white, for: .normal)
-      uploadPhotoButton.setTitleColor(.darkGray, for: .highlighted)
-      uploadPhotoButton.setTitleShadowColor(.systemGray, for: .normal)
-      uploadPhotoButton.layer.cornerRadius = 10
-      uploadPhotoButton.layer.borderWidth = 0.2
-      uploadPhotoButton.layer.borderColor = UIColor.white.cgColor
+      scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+      scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+      scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+      scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+      
+      imageView.translatesAutoresizingMaskIntoConstraints = false
+      scrollView.addSubview(imageView)
+      
+      imageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+      imageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 40).isActive = true
+      
+      imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+      imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 20).isActive = true
+//      imageView.widthAnchor.constraint(equalToConstant: 400).isActive = true
+//      imageView.heightAnchor.constraint(equalToConstant: 500).isActive = true
+      
+      contentStack.translatesAutoresizingMaskIntoConstraints = false
+      scrollView.addSubview(contentStack)
+      
+      contentStack.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+      contentStack.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 0).isActive = true
+//      contentStack.widthAnchor.constraint(equalToConstant: 200).isActive = true
+//      contentStack.heightAnchor.constraint(equalToConstant: 20).isActive = true
+      
+      // Add activity indicator
+      scrollView.addSubview(activityIndicator)
+      activityIndicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
     }
+  
+  func renderPostForm() {
+    contentStack.addArrangedSubview(headingLabel)
+    
+    headingLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+    headingLabel.topAnchor.constraint(equalTo: contentStack.topAnchor, constant: 0).isActive = true
+    headingLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    
+    contentStack.addArrangedSubview(annotationLabel)
+    
+    annotationLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+    annotationLabel.topAnchor.constraint(equalTo: headingLabel.bottomAnchor, constant: 40).isActive = true
+    annotationLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    
+    contentStack.addArrangedSubview(annotationText)
+    
+    annotationText.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+    annotationText.topAnchor.constraint(equalTo: annotationLabel.bottomAnchor, constant: 20).isActive = true
+    annotationText.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    
+    contentStack.addArrangedSubview(summaryLabel)
+    
+    summaryLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+    summaryLabel.topAnchor.constraint(equalTo: annotationText.bottomAnchor, constant: 40).isActive = true
+    summaryLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    
+    contentStack.addArrangedSubview(summaryText)
+    
+    summaryText.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+    summaryText.topAnchor.constraint(equalTo: summaryLabel.bottomAnchor, constant: 20).isActive = true
+    summaryText.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    
+    let postButton = UIButton()
+    
+    postButton.setTitle("Post my photo", for: .normal)
+    postButton.addTarget(self, action: #selector(uploadPost), for: .touchUpInside)
+    
+    postButton.backgroundColor = .blue
+    postButton.alpha = 0.85
+    postButton.setTitleColor(.white, for: .normal)
+    postButton.setTitleColor(.darkGray, for: .highlighted)
+    postButton.setTitleShadowColor(.systemGray, for: .normal)
+    postButton.layer.cornerRadius = 10
+    postButton.layer.borderWidth = 0.2
+    postButton.layer.borderColor = UIColor.white.cgColor
+    
+    contentStack.addArrangedSubview(postButton)
+    
+    postButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+    postButton.topAnchor.constraint(equalTo: summaryText.bottomAnchor, constant: 40).isActive = true
+    postButton.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    postButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+  }
+  
+  func renderUploadButton() {
+    let postButton = UIButton()
+    
+    postButton.setTitle("Add photo to trip", for: .normal)
+    postButton.addTarget(self, action: #selector(uploadPhoto), for: .touchUpInside)
+    
+    postButton.backgroundColor = .blue
+    postButton.alpha = 0.85
+    postButton.setTitleColor(.white, for: .normal)
+    postButton.setTitleColor(.darkGray, for: .highlighted)
+    postButton.setTitleShadowColor(.systemGray, for: .normal)
+    postButton.layer.cornerRadius = 10
+    postButton.layer.borderWidth = 0.2
+    postButton.layer.borderColor = UIColor.white.cgColor
+    
+    contentStack.addArrangedSubview(postButton)
+    
+    postButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+    postButton.topAnchor.constraint(equalTo: contentStack.topAnchor, constant: 40).isActive = true
+    postButton.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    postButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+  }
         
     
     @objc fileprivate func takePhoto() {
@@ -112,46 +314,26 @@ class ImageViewController: UIViewController {
                     return
                 }
               
-                // Update trip for current user
+                // Update trip images / image_coordinates for current user
                 let userRef = Firestore.firestore().collection("users").document(self.userRefString)
               
                 Firestore.firestore().collection("trips").whereField("user", isEqualTo: userRef).getDocuments() { (querySnapshot, err) in
-                  if let err = err { self.presentAlert(title: "Error", message: "Couldn't add image to Trip") }
-                  else {
-                      let document = querySnapshot!.documents.first
-                      document!.reference.updateData([
-                        "images": FieldValue.arrayUnion([url.absoluteString])
-                      ])
-                  }
+                  if err != nil { self.presentAlert(title: "Error", message: "Couldn't add image to Trip"); return; }
+                  let document = querySnapshot!.documents.first
+                  document!.reference.updateData([
+                    "images": FieldValue.arrayUnion([url.absoluteString]),
+                    "image_coordinates": FieldValue.arrayUnion([self.lastRecordedLocation])
+                  ])
+                  
+                  // Save imageUrl
+                  self.imageUrl = url.absoluteString
+                  
+                  // Return to root
+                  self.navigationController?.popToRootViewController(animated: true)
                 }
             })
         }
     }
-  
-  
-  
-  //                // Build a new document ref
-  //                let dataReference = Firestore.firestore().collection(MyKeys.imagesCollection).document()
-  //                let documentUid = dataReference.documentID
-  //
-  //                let urlString = url.absoluteString
-  //
-  //                let data = [
-  //                    MyKeys.uid: documentUid,
-  //                    MyKeys.imageUrl: urlString
-  //                ]
-  //
-  //                // UPLOAD the actual photo
-  //                dataReference.setData(data, completion: { (err) in
-  //                    if let err = err {
-  //                        self.presentAlert(title: "Error", message: err.localizedDescription)
-  //                        return
-  //                    }
-  //
-  //                    UserDefaults.standard.set(documentUid, forKey: MyKeys.uid)
-  //                    self.imageView.image = UIImage()
-  //                    self.presentAlert(title: "Success", message: "Successfully save image to database")
-  //                })
   
   @objc func selectPhoto() {
     if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
@@ -162,17 +344,47 @@ class ImageViewController: UIViewController {
         present(imagePicker, animated: true, completion: nil)
     }
   }
+  
+  @objc func uploadPost() {
+    if summaryText.text == nil || annotationText == nil {
+      presentAlert(title: "Error", message: "Fill out all the fields")
+      return
+    }
     
+    let userRef = Firestore.firestore().collection("users").document(self.userRefString)
+    let tripRef = Firestore.firestore().collection("trips").document(self.tripRefString)
     
-    @objc func image(_ image: UIImage, didFinishSavingWithError err: Error?, contextInfo: UnsafeRawPointer) {
-        activityIndicator.stopAnimating()
+    let data: [String: Any] = [
+        "comments_count": 0,
+        "date": Timestamp(date: Date()),
+        "is_liked": false,
+        "likes_count": 0,
+        "post_annotation": annotationText.text!,
+        "post_image": imageUrl,
+        "tagline": summaryText.text!,
+        "trip": tripRef,
+        "user": userRef
+    ]
+    
+    db.collection("trips").document(tripRefString).setData(data) { err in
         if let err = err {
-            // we got back an error!
-            presentAlert(title: "Error", message: err.localizedDescription)
+          self.presentAlert(title: "Error", message: "Could not upload trip")
         } else {
-            presentAlert(title: "Saved!", message: "Image saved successfully")
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
+    
+  }
+    
+    
+//    @objc func image(_ image: UIImage, didFinishSavingWithError err: Error?, contextInfo: UnsafeRawPointer) {
+//        activityIndicator.stopAnimating()
+//        if let err = err {
+//            presentAlert(title: "Error", message: err.localizedDescription)
+//        } else {
+//            presentAlert(title: "Saved!", message: "Image saved successfully")
+//        }
+//    }
     
     func presentAlert(title: String, message: String) {
         activityIndicator.stopAnimating()
@@ -191,7 +403,17 @@ extension ImageViewController: UINavigationControllerDelegate, UIImagePickerCont
         }
         imageView.image = selectedImage
         imagePickerController.dismiss(animated: true, completion: nil)
-        self.view.addSubview(uploadPhotoButton) // Upload only once image picked
+        
+        let alert = UIAlertController(title: "Nice photo", message: "Would you like to post your image?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Yes please!", style: .default, handler: { (alert: UIAlertAction!) in
+          self.renderPostForm()
+        }))
+        alert.addAction(UIAlertAction(title: "Nope, not yet", style: .default, handler: { (alert: UIAlertAction!) in
+          self.renderUploadButton()
+        }))
+      
+        present(alert, animated: true)
     }
 }
 

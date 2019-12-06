@@ -17,6 +17,10 @@ struct ContentView: View {
     @State private var firstTimeUser:Bool = false
     @State private var tripData:TripData = TripData()
   
+//    init() {
+//        UINavigationBar.appearance().backgroundColor = .systemBlue
+//    }
+  
     // Loads trip for current user
     private func loadTrip() -> Void {
       let db = Firestore.firestore()

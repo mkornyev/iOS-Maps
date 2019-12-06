@@ -16,6 +16,7 @@ class TripData {
   
   // MARK: - Trip Attributes
   
+  var trip_ref: String
   var from_location: String
   var to_location: String?
   var distance: Int
@@ -28,6 +29,7 @@ class TripData {
   var user: DocumentReference?
   
   init() {
+    trip_ref = ""
     from_location = ""
     to_location = nil
     distance = 0
@@ -60,6 +62,7 @@ class TripData {
             for (key, value) in document.data() {
               self.switchCase(key: key, value: value)
             }
+            self.trip_ref = document.documentID
           }
         }
       }

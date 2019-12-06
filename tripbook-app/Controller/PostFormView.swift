@@ -10,10 +10,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
-class ModalViewController: UIViewController {
-  
-  // MARK: Passed Properties
-//  var tripData: TripData
+class PostFormView: UIViewController {
   
   // MARK: UIElements
   
