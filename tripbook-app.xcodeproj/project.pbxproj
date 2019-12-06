@@ -15,6 +15,8 @@
 		4C7E910B237509AF0034FBBB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E910A237509AF0034FBBB /* User.swift */; };
 		4C7E910D237532130034FBBB /* images in Resources */ = {isa = PBXBuildFile; fileRef = 4C7E910C237532130034FBBB /* images */; };
 		4C7E91142375F5CE0034FBBB /* firebase_actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7E91132375F5CE0034FBBB /* firebase_actions.swift */; };
+		4C9B1D0B2399DFDC00901F68 /* LikeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9B1D0A2399DFDC00901F68 /* LikeButtonView.swift */; };
+		4C9B1D0C2399EEE600901F68 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */; };
 		4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */; };
 		4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */; };
 		4C9C6753236E47EC00CAAD0B /* tripbook_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C6751236E47EC00CAAD0B /* tripbook_app.xcdatamodeld */; };
@@ -22,7 +24,6 @@
 		4C9C6757236E47ED00CAAD0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6756236E47ED00CAAD0B /* Assets.xcassets */; };
 		4C9C675A236E47ED00CAAD0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6759236E47ED00CAAD0B /* Preview Assets.xcassets */; };
 		4C9C675D236E47ED00CAAD0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */; };
-		4C9C6765236E4A4100CAAD0B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */; };
 		5057E1592375DC7700B8C6DE /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5057E1582375DC7700B8C6DE /* ModalViewController.swift */; };
 		50CC79512375B3FB00017FE5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79502375B3FB00017FE5 /* MapViewController.swift */; };
 		50CC79532375B41F00017FE5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79522375B41F00017FE5 /* Location.swift */; };
@@ -31,7 +32,7 @@
 		50CC79582375B77800017FE5 /* MapViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */; };
 		50CC79592375B98C00017FE5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794D2375B3B800017FE5 /* ProfileView.swift */; };
 		50CC795A2375B98F00017FE5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794E2375B3B800017FE5 /* CardView.swift */; };
-		50CC795B2375B99100017FE5 /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794F2375B3B800017FE5 /* PostCard.swift */; };
+		50CC795B2375B99100017FE5 /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794F2375B3B800017FE5 /* PostFeedView.swift */; };
 		6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		4C7E910A237509AF0034FBBB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4C7E910C237532130034FBBB /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		4C7E91132375F5CE0034FBBB /* firebase_actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = firebase_actions.swift; sourceTree = "<group>"; };
+		4C9B1D0A2399DFDC00901F68 /* LikeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButtonView.swift; sourceTree = "<group>"; };
 		4C9C674A236E47EC00CAAD0B /* tripbook-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tripbook-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,7 +60,7 @@
 		50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWrapper.swift; sourceTree = "<group>"; };
 		50CC794D2375B3B800017FE5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		50CC794E2375B3B800017FE5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		50CC794F2375B3B800017FE5 /* PostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCard.swift; sourceTree = "<group>"; };
+		50CC794F2375B3B800017FE5 /* PostFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
 		50CC79502375B3FB00017FE5 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		50CC79522375B41F00017FE5 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		50CC79542375B45600017FE5 /* TripData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripData.swift; sourceTree = "<group>"; };
@@ -165,8 +167,9 @@
 				50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */,
 				50CC794D2375B3B800017FE5 /* ProfileView.swift */,
 				50CC794E2375B3B800017FE5 /* CardView.swift */,
-				50CC794F2375B3B800017FE5 /* PostCard.swift */,
+				50CC794F2375B3B800017FE5 /* PostFeedView.swift */,
 				50CC79562375B4E700017FE5 /* IntroAddTripView.swift */,
+				4C9B1D0A2399DFDC00901F68 /* LikeButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -248,8 +251,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C9B1D0C2399EEE600901F68 /* GoogleService-Info.plist in Resources */,
 				4C9C675D236E47ED00CAAD0B /* LaunchScreen.storyboard in Resources */,
-				4C9C6765236E4A4100CAAD0B /* GoogleService-Info.plist in Resources */,
 				4C9C675A236E47ED00CAAD0B /* Preview Assets.xcassets in Resources */,
 				4C9C6757236E47ED00CAAD0B /* Assets.xcassets in Resources */,
 				4C7E910D237532130034FBBB /* images in Resources */,
@@ -314,9 +317,10 @@
 				50CC79532375B41F00017FE5 /* Location.swift in Sources */,
 				5057E1592375DC7700B8C6DE /* ModalViewController.swift in Sources */,
 				50CC79572375B4E700017FE5 /* IntroAddTripView.swift in Sources */,
+				4C9B1D0B2399DFDC00901F68 /* LikeButtonView.swift in Sources */,
 				4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */,
 				4C9C6755236E47EC00CAAD0B /* ContentView.swift in Sources */,
-				50CC795B2375B99100017FE5 /* PostCard.swift in Sources */,
+				50CC795B2375B99100017FE5 /* PostFeedView.swift in Sources */,
 				50CC79512375B3FB00017FE5 /* MapViewController.swift in Sources */,
 				6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */,
 				4C7E910B237509AF0034FBBB /* User.swift in Sources */,

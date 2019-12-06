@@ -41,15 +41,20 @@ struct PostCard: View {
           .aspectRatio(contentMode: .fill)
           .frame(width:400.0, height: 400.0)
         HStack(alignment: .center, spacing: 80.0) {
-          Image("Like_heart")
-            .resizable()
-            .frame(width: 55.0, height: 30.0)
+          LikeButtonView(is_liked: post.is_liked, like_count: post.likes_count, like_count_str: String(post.likes_count))
+          
           Divider()
           Image("Comment")
             .resizable()
             .frame(width: 50.0, height: 50.0)
         }
         .padding(.leading, 80.0)
+        
+//        Text(String(post.likes_count)+" Likes")
+//            .fontWeight(.bold)
+//          .font(.body)
+//          .padding(.leading, 25.0)
+//          .padding(.bottom, 10.0)
         
         HStack(){
           Text(post.username)
@@ -66,6 +71,10 @@ struct PostCard: View {
       .padding([.top,.bottom], 10)
       
     }
+  }
+  
+  private func toggleLiked(){
+    
   }
 }
 

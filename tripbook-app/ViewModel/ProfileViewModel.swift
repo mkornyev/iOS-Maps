@@ -33,7 +33,7 @@ class ProfileViewModel : ObservableObject, Identifiable {
                   if user.data()!["fname"] as! String == "Jon" {
                     let f = user.data()!["fname"] as! String
                     let l = user.data()!["lname"] as! String
-                    let temp = Post(id: post.documentID,  post_annotation: post.data()["post_annotation"] as! String, post_images: ["Landscape" + String(self.count)], date: post.data()["date"] as! Timestamp, username: f + " " + l, profile_pic: "Profile_pic2")
+                    let temp = Post(id: post.documentID,  post_annotation: post.data()["post_annotation"] as! String, post_images: ["Landscape" + String(self.count)], date: post.data()["date"] as! Timestamp, username: f + " " + l, profile_pic: "Profile_pic2", is_liked: post.data()["is_liked"] as! Bool, likes_count: post.data()["likes_count"] as! Int)
                     self.posts.append(temp)
                     self.count += 1
                   }

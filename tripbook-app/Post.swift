@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 
+
 struct Post: Hashable, Identifiable {
   var id: String
   var post_annotation: String
@@ -17,6 +18,8 @@ struct Post: Hashable, Identifiable {
   var date: Timestamp
   var username: String
   var profile_pic: String
+  var is_liked: Bool
+  var likes_count: Int
   //var user_image: String
   
   //need to add reference to trip
