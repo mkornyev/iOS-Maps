@@ -13,8 +13,10 @@ import FirebaseFirestoreSwift
 struct Comment: Hashable, Identifiable {
   var id: String
   var comment: String
-  var likes_count:Int = 0
-  var user: DocumentReference
-  var post: DocumentReference
+  var likes_count:Int
+  var is_liked: Bool
+  var username: String
+  var profile_image: String
+  var postId: String
 }
 

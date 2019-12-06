@@ -32,6 +32,7 @@ struct LikeButtonView: View {
           self.like_count_str = String(self.like_count)
           self.is_liked.toggle()
         
+        
         }) {
             Image(systemName: self.is_liked ? "heart.fill" : "heart")
             .resizable()
