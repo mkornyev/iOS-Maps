@@ -282,57 +282,9 @@ class ImageViewController: UIViewController {
     }
     
     
-    @objc fileprivate func uploadPhoto() {
-        activityIndicator.startAnimating()
-        
-        guard let image = imageView.image,
-            let data = image.jpegData(compressionQuality: 1.0) else {
-            presentAlert(title: "Error", message: "Could not upoad photo.")
-            return
-        }
-        
-        let imageName = UUID().uuidString
-        
-        let imageReference = Storage.storage().reference()
-            .child(MyKeys.imagesFolder)
-            .child(imageName)
-        
-        imageReference.putData(data, metadata: nil) { (metadata, err) in
-            if let err = err {
-                self.presentAlert(title: "Error", message: err.localizedDescription)
-                return
-            }
-            
-            imageReference.downloadURL(completion: { (url, err) in
-                if let err = err {
-                    self.presentAlert(title: "Error", message: err.localizedDescription)
-                    return
-                }
-                
-                guard let url = url else {
-                    self.presentAlert(title: "Error", message: "Something went wrong")
-                    return
-                }
-              
-                // Update trip images / image_coordinates for current user
-                let userRef = Firestore.firestore().collection("users").document(self.userRefString)
-              
-                Firestore.firestore().collection("trips").whereField("user", isEqualTo: userRef).getDocuments() { (querySnapshot, err) in
-                  if err != nil { self.presentAlert(title: "Error", message: "Couldn't add image to Trip"); return; }
-                  let document = querySnapshot!.documents.first
-                  document!.reference.updateData([
-                    "images": FieldValue.arrayUnion([url.absoluteString]),
-                    "image_coordinates": FieldValue.arrayUnion([self.lastRecordedLocation])
-                  ])
-                  
-                  // Save imageUrl
-                  self.imageUrl = url.absoluteString
-                  
-                  // Return to root
-                  self.navigationController?.popToRootViewController(animated: true)
-                }
-            })
-        }
+  @objc fileprivate func uploadPhoto() {
+        uploadPhotoHelper()
+        self.navigationController?.popToRootViewController(animated: true)
     }
   
   @objc func selectPhoto() {
@@ -350,6 +302,9 @@ class ImageViewController: UIViewController {
       presentAlert(title: "Error", message: "Fill out all the fields")
       return
     }
+    
+    // Save photo to FireStorage
+    uploadPhotoHelper()
     
     let userRef = Firestore.firestore().collection("users").document(self.userRefString)
     let tripRef = Firestore.firestore().collection("trips").document(self.tripRefString)
@@ -401,19 +356,68 @@ extension ImageViewController: UINavigationControllerDelegate, UIImagePickerCont
         }
         imageView.image = selectedImage
         imagePickerController.dismiss(animated: true, completion: {
-          
-          let alert = UIAlertController(title: "Nice photo", message: "Would you like to post your image?", preferredStyle: .alert)
-          
-          alert.addAction(UIAlertAction(title: "Yes please!", style: .default, handler: { (alert: UIAlertAction!) in
-            self.renderPostForm()
-          }))
-          alert.addAction(UIAlertAction(title: "Nope, not yet", style: .default, handler: { (alert: UIAlertAction!) in
-            self.renderUploadButton()
-          }))
-        
-          self.present(alert, animated: true, completion: nil)
-          
+          self.renderPostForm()
+//          let alert = UIAlertController(title: "Nice photo", message: "Would you like to post your image?", preferredStyle: .alert)
+//
+//          alert.addAction(UIAlertAction(title: "Yes please!", style: .default, handler: { (alert: UIAlertAction!) in
+//            self.renderPostForm()
+//          }))
+//          alert.addAction(UIAlertAction(title: "Nope, not yet", style: .default, handler: { (alert: UIAlertAction!) in
+//            self.renderUploadButton()
+//          }))
+//
+//          self.present(alert, animated: true, completion: nil)
         })
+    }
+  
+    func uploadPhotoHelper() {
+      activityIndicator.startAnimating()
+      
+      guard let image = imageView.image,
+          let data = image.jpegData(compressionQuality: 1.0) else {
+          presentAlert(title: "Error", message: "Could not upoad photo.")
+          return
+      }
+      
+      let imageName = UUID().uuidString
+      
+      let imageReference = Storage.storage().reference()
+          .child(MyKeys.imagesFolder)
+          .child(imageName)
+      
+      imageReference.putData(data, metadata: nil) { (metadata, err) in
+          if let err = err {
+              self.presentAlert(title: "Error", message: err.localizedDescription)
+              return
+          }
+          
+          imageReference.downloadURL(completion: { (url, err) in
+              if let err = err {
+                  self.presentAlert(title: "Error", message: err.localizedDescription)
+                  return
+              }
+              
+              guard let url = url else {
+                  self.presentAlert(title: "Error", message: "Something went wrong")
+                  return
+              }
+            
+              // Update trip images / image_coordinates for current user
+              let userRef = Firestore.firestore().collection("users").document(self.userRefString)
+            
+              Firestore.firestore().collection("trips").whereField("user", isEqualTo: userRef).getDocuments() { (querySnapshot, err) in
+                if err != nil { self.presentAlert(title: "Error", message: "Couldn't add image to Trip"); return; }
+                let document = querySnapshot!.documents.first
+                document!.reference.updateData([
+                  "images": FieldValue.arrayUnion([url.absoluteString]),
+                  "image_coordinates": FieldValue.arrayUnion([self.lastRecordedLocation])
+                ])
+                
+                // Save imageUrl
+                self.imageUrl = url.absoluteString
+              }
+          })
+      }
     }
 }
 
