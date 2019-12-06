@@ -46,24 +46,24 @@ struct ContentView: View {
     var body: some View {
       TabView(selection: $selection){
           
-          // Use Navigation views to present aditional views
-        NavigationView { PostCard().navigationBarTitle("Feed")  }
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "list.dash")
-                        Text("Feed")
+              // Use Navigation views to present aditional views
+            NavigationView { PostCard().navigationBarTitle("Feed")  }
+                    .font(.title)
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "list.dash")
+                            Text("Feed")
+                        }
                     }
-                }
                 .tag(0)
-            Text("Friends View")
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "person.3")
-                        Text("Friends")
+            NavigationView { FriendsView().navigationBarTitle("Friends")  }
+                    .font(.title)
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "person.3")
+                            Text("Friends")
+                        }
                     }
-                }
                 .tag(1)
             NavigationView {
                 if firstTimeUser { IntroAddTripView().navigationBarTitle("My TripBook")  }
