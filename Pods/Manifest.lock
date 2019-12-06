@@ -57,7 +57,10 @@ PODS:
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
-  - Floaty (4.2.0)
+  - FirebaseStorage (3.4.1):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleAppMeasurement (6.1.3):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -102,6 +105,8 @@ PODS:
     - gRPC-Core/Interface (= 1.21.0)
     - nanopb (~> 0.3)
   - gRPC-Core/Interface (1.21.0)
+  - GTMSessionFetcher/Core (1.2.2)
+  - Kingfisher (5.3.1)
   - leveldb-library (1.22)
   - nanopb (0.3.904):
     - nanopb/decode (= 0.3.904)
@@ -109,13 +114,16 @@ PODS:
   - nanopb/decode (0.3.904)
   - nanopb/encode (0.3.904)
   - Protobuf (3.10.0)
+  - TinyConstraints (4.0.1)
 
 DEPENDENCIES:
   - CodableFirebase
   - Firebase/Core
   - Firebase/Firestore
   - FirebaseFirestoreSwift
-  - Floaty (~> 4.2.0)
+  - FirebaseStorage
+  - Kingfisher (~> 5.3.1)
+  - TinyConstraints
 
 SPEC REPOS:
   trunk:
@@ -130,16 +138,19 @@ SPEC REPOS:
     - FirebaseFirestore
     - FirebaseFirestoreSwift
     - FirebaseInstanceID
-    - Floaty
+    - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
+    - GTMSessionFetcher
+    - Kingfisher
     - leveldb-library
     - nanopb
     - Protobuf
+    - TinyConstraints
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -153,17 +164,20 @@ SPEC CHECKSUMS:
   FirebaseFirestore: bb8315fa13a15ea8977e940496b74ba6ad9071f2
   FirebaseFirestoreSwift: 0437bb10d83f8161a9131da1739998254c78fdf5
   FirebaseInstanceID: d0eafcd8bdbd3447cd694594734078c3e3e77d8b
-  Floaty: e2bd5a0f6f7f70899e26ff2da31081c8bee8d1b0
+  FirebaseStorage: b7c6d00997bc21d4465453bdcc5cc65513110fed
   GoogleAppMeasurement: 434cc7be25e71dc04b8d0e3079125127b330e84a
   GoogleDataTransport: 166f9b9f82cbf60a204e8fe2daa9db3e3ec1fb15
   GoogleDataTransportCCTSupport: f6ab1962e9dc05ab1fb938b795e5b310209edeec
   GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
+  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
+  Kingfisher: d9e7e0b209b59b8f9873aa2f37654e81a7beea51
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 06f6030d554e6473f5e172460173fcf80f5548f4
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  TinyConstraints: 8dd91295e56797648c7bc335dd20e1d91ec4c192
 
-PODFILE CHECKSUM: f3a74f3dc09a2644a538a5d070fb849e8eb7c0f8
+PODFILE CHECKSUM: d2256a1cbfa530e9e6fc5c2d42237ab735e60e22
 
 COCOAPODS: 1.8.4

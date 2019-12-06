@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 import FirebaseFirestore
-import Floaty
+import FirebaseStorage
 
 class MapViewController: UIViewController {
   // MARK: - Passed State Vars
@@ -18,50 +18,25 @@ class MapViewController: UIViewController {
 //  var loadTrip: Bool
   private var LATENCY:Double = 2.5
   
-  // MARK: - Models
+  // MARK: - Trip Models
   
   var location: Location = Location()
   var mapView: MKMapView!
-  var floatyButtons: Floaty!
+//  let floatyButtons: Floaty!
   var tripData:TripData
   
   // MARK: - Inits
-  
+
   init(tripData: TripData) {
     self.tripData = tripData
     super.init(nibName: nil, bundle: nil) // Must come last
   }
   
   required init?(coder: NSCoder) {
-    fatalError("Failed to init? tripData")
+    fatalError("Failed to init tripData")
   }
   
   // MARK: - Methods
-  
-//  override func viewWillAppear(_ animated: Bool) {
-//    super.viewWillAppear(animated)
-//
-//    // NO ONGOING TRIP
-//    if self.tripData?.from_location == "" {
-//      // Show create trip annotations
-//      print("NO ONGOING TRIP")
-//
-////      print("init data: \(self.tripData)")
-////      self.loadTripData()
-////      print("init data: \(self.tripData)")
-//
-//      // The above async call takes too long (it only populates the data after viewDidLoad runs)
-////       so I populate data directly:
-////      self.tripData = populateRoute()
-//    } else {
-//      print("ONGOING TRIP")
-//
-//      drawPolyline(self.tripData.trip_data) // Draws polyline from data, sets an annotation endpoint
-//      centerMap(onUser: false, data: self.tripData.trip_data) // Center on trip
-//      showButtonTools() // Show edit annotations
-//    }
-//  }
-  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
@@ -79,12 +54,11 @@ class MapViewController: UIViewController {
         print("ONGOING TRIP")
         self.drawPolyline(self.tripData.trip_data) // Draws polyline from data, sets an annotation endpoint
         self.centerMap(onUser: false) // Center on trip
-        self.showButtonTools() // Show edit annotations
         //self.showDescripriveOverlay() // Shows map annotations 
       }
     }
-    
     mapView.delegate = self
+    showButtonTools()
   }
   
   func frameMapView() -> Void {
@@ -131,60 +105,9 @@ class MapViewController: UIViewController {
       self.mapView.setRegion(region, animated: true)
     }
   }
-  
-  func showButtonTools() -> Void {
-    self.floatyButtons = Floaty()
-    floatyButtons.addItem("Add Text", icon: UIImage(named: "TextIcon")!, handler: { item in
-        let alert = UIAlertController(title: "Text Annotation", message: "Drag and stick this annotation onto your trip", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Got it!", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-        self.floatyButtons.close()
-    })
-    
-//    floaty.addItem("Add Image", icon: UIImage(named: "ImageIcon")!)
-//
-//    floaty.addItem("Share Trip", icon: UIImage(named: "ArrowIcon")!, handler: { item in
-//      // stop trip, push to Firebase
-//      // show Share trip modal
-//      // push post to Firebase
-//      // showPost
-//
-//      let alert = UIAlertController(title: "Are you sure?", message: "If you post your trip, it will have to end.", preferredStyle: .alert)
-//      alert.addAction(UIAlertAction(title: "Yep, post it!", style: .default, handler: {item in
-//        let modalViewController = ModalViewController()
-//          modalViewController.modalPresentationStyle = .overFullScreen
-//          self.present(modalViewController, animated: true, completion: nil)
-//      }))
-//      alert.addAction(UIAlertAction(title: "Nope, wait up", style: .default, handler: { item in floaty.close() }))
-//      self.present(alert, animated: true, completion: nil)
-//    })
-    
-    view.addSubview(floatyButtons)
-    self.mapView.addSubview(floatyButtons)
-    
-    print("\n\nADDED FLOATY!!!! ------------\n\n")
-    
-  }
 }
 
-//extension MapViewController: LiquidFloatingActionButtonDataSource {
-//  func numberOfCells(_ liquidFloatingActionButton: LiquidFloatingActionButton) -> Int {
-//    return cells.count
-//  }
-//
-//  func cellForIndex(_ index: Int) -> LiquidFloatingCell {
-//    return cells[index]
-//  }
-//}
-//
-//extension MapViewController: LiquidFloatingActionButtonDelegate {
-//  func liquidFloatingActionButton(didSelectItemAtIndex index: Int){
-//    print("Button #\(index) clicked")
-//  }
-//}
-
-
-// MARK: - MapView Delegate, Polyline Renderer
+// MARK: - Polyline Rendering
 
 extension MapViewController: MKMapViewDelegate {
   
@@ -224,8 +147,67 @@ extension MapViewController: MKMapViewDelegate {
   
 }
 
+// MARK: - Buttons & Actions
 
-// MARK: - Mock Helper
+extension MapViewController {
+  struct firebaseKeys {
+    static let imgFolder = "userImages" // Firebase Storage Folder
+    static let imgCollection = "coll"
+    static let uid = "uid"
+    static let imgUrl = "url"
+  }
+  
+  func showButtonTools() -> Void {
+    let addText = UIButton(frame: CGRect(x: 75, y: 600, width: 85, height: 35))
+    addText.setTitle("Add Text", for: .normal)
+    addText.addTarget(self, action: #selector(addTextButtonTap), for: .touchUpInside)
+    setButtonStyle(addText)
+
+    let addImage = UIButton(frame: CGRect(x: 175, y: 600, width: 85, height: 35))
+    addImage.setTitle("Add Image", for: .normal)
+    addImage.addTarget(self, action: #selector(addImageButtonTap), for: .touchUpInside)
+    setButtonStyle(addImage)
+
+    let shareImage = UIButton(frame: CGRect(x: 275, y: 600, width: 85, height: 35))
+    shareImage.setTitle("Share Latest Image", for: .normal)
+    shareImage.addTarget(self, action: #selector(shareButtonTap), for: .touchUpInside)
+    setButtonStyle(shareImage)
+  }
+   
+  func setButtonStyle(_ button: UIButton) {
+    button.backgroundColor = .blue
+    button.alpha = 0.85
+    button.setTitleColor(.white, for: .normal)
+    button.setTitleColor(.darkGray, for: .highlighted)
+    button.setTitleShadowColor(.systemGray, for: .normal)
+    button.layer.cornerRadius = 10
+    button.layer.borderWidth = 0.2
+    button.layer.borderColor = UIColor.white.cgColor
+
+    self.view.addSubview(button)
+  }
+ 
+  @objc func addTextButtonTap(sender: UIButton!) {
+    print("1Button tapped")
+  }
+ 
+ @objc func addImageButtonTap(sender: UIButton!) {
+  let imageVC = ImageViewController()
+  imageVC.modalPresentationStyle = .overFullScreen
+//  self.present(imageVC, animated: true, completion: nil)
+//  self.pushViewController(imageVC, animated: true, completion: nil)
+  
+  self.navigationController?.pushViewController(imageVC, animated: true)
+ }
+
+ @objc func shareButtonTap(sender: UIButton!) {
+   print("3Button tapped")
+ }
+ 
+}
+
+
+// MARK: - Mock Helper Code
 //extension MapViewController {
 //  func populateRoute(_ tripID: String = "") -> Void {
 //    let tripCoords: [[Double]]
@@ -394,3 +376,4 @@ extension MapViewController: MKMapViewDelegate {
 //}
 //
 //
+
