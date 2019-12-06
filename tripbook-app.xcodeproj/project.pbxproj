@@ -21,7 +21,6 @@
 		4C9C675A236E47ED00CAAD0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6759236E47ED00CAAD0B /* Preview Assets.xcassets */; };
 		4C9C675D236E47ED00CAAD0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */; };
 		4C9C6765236E4A4100CAAD0B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */; };
-		5057E1592375DC7700B8C6DE /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5057E1582375DC7700B8C6DE /* ModalViewController.swift */; };
 		50CC79512375B3FB00017FE5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79502375B3FB00017FE5 /* MapViewController.swift */; };
 		50CC79532375B41F00017FE5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79522375B41F00017FE5 /* Location.swift */; };
 		50CC79552375B45600017FE5 /* TripData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79542375B45600017FE5 /* TripData.swift */; };
@@ -30,7 +29,10 @@
 		50CC79592375B98C00017FE5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794D2375B3B800017FE5 /* ProfileView.swift */; };
 		50CC795A2375B98F00017FE5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794E2375B3B800017FE5 /* CardView.swift */; };
 		50CC795B2375B99100017FE5 /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC794F2375B3B800017FE5 /* PostCard.swift */; };
+		50CDD02A2399C90C00E33EEE /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CDD0292399C90C00E33EEE /* ImageViewController.swift */; };
 		6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */; };
+		6CC7E78A239A69A000770CF2 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC7E789239A69A000770CF2 /* FriendsView.swift */; };
+		6CC7E78C239A6A5F00770CF2 /* FriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC7E78B239A6A5F00770CF2 /* FriendsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,7 +52,6 @@
 		4C9C675C236E47ED00CAAD0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C9C675E236E47ED00CAAD0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		5057E1582375DC7700B8C6DE /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
 		50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWrapper.swift; sourceTree = "<group>"; };
 		50CC794D2375B3B800017FE5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		50CC794E2375B3B800017FE5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -59,9 +60,12 @@
 		50CC79522375B41F00017FE5 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		50CC79542375B45600017FE5 /* TripData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripData.swift; sourceTree = "<group>"; };
 		50CC79562375B4E700017FE5 /* IntroAddTripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroAddTripView.swift; sourceTree = "<group>"; };
+		50CDD0292399C90C00E33EEE /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		5625A2544F9589AABC6E944B /* Pods_tripbook_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tripbook_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		633367DD27C41920F996FA33 /* Pods-tripbook-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tripbook-app.release.xcconfig"; path = "Target Support Files/Pods-tripbook-app/Pods-tripbook-app.release.xcconfig"; sourceTree = "<group>"; };
 		6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		6CC7E789239A69A000770CF2 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		6CC7E78B239A6A5F00770CF2 /* FriendsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,7 @@
 		4C04FD4E237200AB001A3669 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				6CC7E78B239A6A5F00770CF2 /* FriendsViewModel.swift */,
 				4C04FD4F237200CD001A3669 /* PostViewModel.swift */,
 				6C84B33D23754A090024C2F6 /* ProfileViewModel.swift */,
 			);
@@ -123,8 +128,8 @@
 				50CC794B2375B3B800017FE5 /* View */,
 				50CC794A2375B39600017FE5 /* Controller */,
 				4C9C674D236E47EC00CAAD0B /* AppDelegate.swift */,
-				4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */,
 				4C9C6754236E47EC00CAAD0B /* ContentView.swift */,
+				4C9C674F236E47EC00CAAD0B /* SceneDelegate.swift */,
 				4C9C6756236E47ED00CAAD0B /* Assets.xcassets */,
 				4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */,
 				4C9C675E236E47ED00CAAD0B /* Info.plist */,
@@ -148,7 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				50CC79502375B3FB00017FE5 /* MapViewController.swift */,
-				5057E1582375DC7700B8C6DE /* ModalViewController.swift */,
+				50CDD0292399C90C00E33EEE /* ImageViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -156,11 +161,12 @@
 		50CC794B2375B3B800017FE5 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */,
-				50CC794D2375B3B800017FE5 /* ProfileView.swift */,
 				50CC794E2375B3B800017FE5 /* CardView.swift */,
+				6CC7E789239A69A000770CF2 /* FriendsView.swift */,
+				50CC794D2375B3B800017FE5 /* ProfileView.swift */,
 				50CC794F2375B3B800017FE5 /* PostCard.swift */,
 				50CC79562375B4E700017FE5 /* IntroAddTripView.swift */,
+				50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -306,7 +312,6 @@
 				50CC79582375B77800017FE5 /* MapViewWrapper.swift in Sources */,
 				50CC795A2375B98F00017FE5 /* CardView.swift in Sources */,
 				50CC79532375B41F00017FE5 /* Location.swift in Sources */,
-				5057E1592375DC7700B8C6DE /* ModalViewController.swift in Sources */,
 				50CC79572375B4E700017FE5 /* IntroAddTripView.swift in Sources */,
 				4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */,
 				4C9C6755236E47EC00CAAD0B /* ContentView.swift in Sources */,
@@ -315,6 +320,9 @@
 				6C84B33E23754A090024C2F6 /* ProfileViewModel.swift in Sources */,
 				4C7E910B237509AF0034FBBB /* User.swift in Sources */,
 				4C04FD4C2370E68C001A3669 /* Post.swift in Sources */,
+				6CC7E78A239A69A000770CF2 /* FriendsView.swift in Sources */,
+				6CC7E78C239A6A5F00770CF2 /* FriendsViewModel.swift in Sources */,
+				50CDD02A2399C90C00E33EEE /* ImageViewController.swift in Sources */,
 				50CC79592375B98C00017FE5 /* ProfileView.swift in Sources */,
 				4C9C6750236E47EC00CAAD0B /* SceneDelegate.swift in Sources */,
 			);
@@ -368,6 +376,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UAZ374FD6P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -384,7 +393,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -428,6 +437,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = UAZ374FD6P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -438,7 +448,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -462,7 +472,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "JF.tripbook-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "MK.tripbook-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -483,7 +493,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "JF.tripbook-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "MK.tripbook-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

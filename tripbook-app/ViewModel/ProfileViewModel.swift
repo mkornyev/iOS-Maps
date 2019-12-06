@@ -26,14 +26,14 @@ class ProfileViewModel : ObservableObject, Identifiable {
         print("Error getting documents: \(err)")
       } else {
           for post in querySnapshot!.documents {
-            print("\(post.documentID) => \(post.data())")
+//            print("\(post.documentID) => \(post.data())")
             if let u = post.data()["user"] as? DocumentReference {
               u.getDocument { (user, err) in
                 if let user = user, user.exists {
                   if user.data()!["fname"] as! String == "Jon" {
                     let f = user.data()!["fname"] as! String
                     let l = user.data()!["lname"] as! String
-                    let temp = Post(id: post.documentID,  post_annotation: post.data()["post_annotation"] as! String, post_images: ["Landscape" + String(self.count)], date: post.data()["date"] as! Timestamp, username: f + " " + l, profile_pic: "Profile_pic2")
+                    let temp = Post(id: post.documentID,  post_annotation: post.data()["post_annotation"] as! String, post_images: ["Landscape" + String(self.count)], date: post.data()["date"] as! Timestamp, username: f + " " + l, profile_pic: "Profile_pic3")
                     self.posts.append(temp)
                     self.count += 1
                   }

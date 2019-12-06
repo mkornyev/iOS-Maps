@@ -9,12 +9,10 @@
 import SwiftUI
 
 struct MapViewWrapper: UIViewControllerRepresentable {
-  var tripID: String
-  var editView: Bool
-  var loadTrip: Bool
+  var data: TripData
   
   func makeUIViewController(context: UIViewControllerRepresentableContext<MapViewWrapper>) -> MapViewController {
-    let mapController = MapViewController(tripID: tripID, editView: editView, loadTrip: loadTrip)
+    let mapController = MapViewController(tripData: data)
 //    let mapController = MapViewController()
     return mapController
   }

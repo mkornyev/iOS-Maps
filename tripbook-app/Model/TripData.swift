@@ -9,31 +9,153 @@ import FirebaseFirestore
 import CodableFirebase
 
 extension GeoPoint: GeoPointType {}
+extension DocumentReference: DocumentReferenceType {}
 
 class TripData {
 //  let db = Firestore.firestore()
   
+  // MARK: - Trip Attributes
+  
+  var trip_ref: String
   var from_location: String
   var to_location: String?
   var distance: Int
   var trip_data: [CLLocationCoordinate2D]
+  var image_coordinates: [CLLocationCoordinate2D]
+  var images: [String]
+  var annotation_coordinates: [CLLocationCoordinate2D]
+  var annotations: [String]
 //  var tripImages: [CLLocationCoordinate2D: String]
 //  var tripAnnotations: [CLLocationCoordinate2D: String]
   var start_date: Date
   var end_date: Date?
-  var visible: Bool
+//  var visible: Bool
   var user: String
   
   init() {
+    trip_ref = ""
     from_location = ""
     to_location = nil
     distance = 0
     trip_data = []
+    image_coordinates = []
+    images = []
+    annotation_coordinates = []
+    annotations = []
     start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
     end_date = nil
-    visible = false
+//    visible = false
     user = ""
   }
+
+  // MARK: - Methods
+  
+  // Populates the tripData struct given a valid tripID
+  public func loadTripData(_ tripID: String = "JCzEKCv9XGglmZyq8V0J") -> Void {
+    
+//    let myGroup = DispatchGroup()
+//    myGroup.enter()
+    
+    let db = Firestore.firestore()
+  
+    let locationsRef = db.collection("trips")
+    locationsRef.getDocuments { (querySnapshot, err) in
+      if let err = err {
+          print("ERROR: Couldn't recieve Firestore snapshot: \(err)")
+      } else {
+        for document in querySnapshot!.documents {
+//          print("\(document.documentID) => \(document.data())")
+
+          if document.documentID == tripID {
+            for (key, value) in document.data() {
+              self.switchCase(key: key, value: value)
+            }
+            self.trip_ref = document.documentID
+          }
+        }
+      }
+//      if let document = document, document.exists {
+//         for (key, value) in document.data()! {
+//           self.switchCase(key: key, value: value)
+//         }
+//      } else {
+//        print("ERROR: Couldn't recieve Firestore snapshot: \(err) | loadTripData() in TripData")
+//      }
+      
+    }
+//    myGroup.leave() //// When your task completes
+//    myGroup.notify(queue: DispatchQueue.main) {
+//      print("!!!!!!!!!!!!    DONE    !!!!!!!!!!!!")
+//    }
+    
+//    print("***********Trip data (end of loadTripData)**************")
+//    print(self.tripData.trip_data)
+//    print("**********************************")
+  }
+  
+  private func switchCase(key: String, value: Any) {
+    switch key {
+      case "user":
+        let ref = value as! DocumentReference
+        self.user = ref.documentID
+        
+      case "from_location":
+        self.from_location = value as! String
+      
+      case "to_location":
+        self.to_location = value as? String
+      
+      case "distance":
+        self.distance = value as! Int
+        
+      case "start_date":
+        let t = value as! Timestamp
+        self.start_date = t.dateValue()
+        
+      case "end_date":
+        let t = value as! Timestamp
+        self.end_date = t.dateValue()
+      
+//      case "visible":
+//        self.visible = value as! Bool
+      
+      case "trip_data":
+        let rawArray = value as! [GeoPoint]
+        
+        for point in rawArray {
+          let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+          self.trip_data.append(coord)
+        }
+      
+      case "image_coordinates":
+        let rawArray = value as! [GeoPoint]
+      
+        for point in rawArray {
+          let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+          self.image_coordinates.append(coord)
+        }
+      
+      case "images":
+        let rawArray = value as! [String]
+        self.images = rawArray
+      
+      case "annotation_coordinates":
+        let rawArray = value as! [GeoPoint]
+      
+        for point in rawArray {
+          let coord = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+          self.annotation_coordinates.append(coord)
+        }
+      
+      case "annotations":
+        let rawArray = value as! [String]
+        self.annotations = rawArray
+      
+      default:
+        print("Invalid firebase token provided: /Model/TripData in loadTripData()")
+    }
+  }
+
 }
 
 

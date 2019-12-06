@@ -21,7 +21,8 @@ struct IntroAddTripView: View {
 //                .stroke(Color.blue, lineWidth: 1)
 //        )
           .padding([.leading, .trailing], 30)
-        NavigationLink(destination: MapViewWrapper(tripID: "blank", editView: false, loadTrip: true)) {
+        // Passing tripData without loading 
+        NavigationLink(destination: MapViewWrapper(data: TripData())) {
           Text("Allow Access")
             .padding(.top, 20)
             .font(.title)
