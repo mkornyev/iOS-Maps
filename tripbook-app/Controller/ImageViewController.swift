@@ -37,7 +37,8 @@ class ImageViewController: UIViewController {
     
     lazy var imageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = true
         iv.backgroundColor = .gray
         return iv
     }()
@@ -165,7 +166,6 @@ class ImageViewController: UIViewController {
         imageView.edgesToSuperview()
         activityIndicator.centerInSuperview()
         
-        renderScrollView()
     }
   
     func renderScrollView() {
@@ -184,7 +184,7 @@ class ImageViewController: UIViewController {
       
       imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
       imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 20).isActive = true
-      imageView.widthAnchor.constraint(equalToConstant: (view.frame.width*4)/5).isActive = true
+      imageView.widthAnchor.constraint(equalToConstant: (view.frame.width*3)/5).isActive = true
       imageView.heightAnchor.constraint(equalToConstant: 500).isActive = true
       
       contentStack.translatesAutoresizingMaskIntoConstraints = false
@@ -400,18 +400,20 @@ extension ImageViewController: UINavigationControllerDelegate, UIImagePickerCont
             return
         }
         imageView.image = selectedImage
-        imagePickerController.dismiss(animated: true, completion: nil)
+        imagePickerController.dismiss(animated: true, completion: {
+          
+          let alert = UIAlertController(title: "Nice photo", message: "Would you like to post your image?", preferredStyle: .alert)
+          
+          alert.addAction(UIAlertAction(title: "Yes please!", style: .default, handler: { (alert: UIAlertAction!) in
+            self.renderPostForm()
+          }))
+          alert.addAction(UIAlertAction(title: "Nope, not yet", style: .default, handler: { (alert: UIAlertAction!) in
+            self.renderUploadButton()
+          }))
         
-        let alert = UIAlertController(title: "Nice photo", message: "Would you like to post your image?", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Yes please!", style: .default, handler: { (alert: UIAlertAction!) in
-          self.renderPostForm()
-        }))
-        alert.addAction(UIAlertAction(title: "Nope, not yet", style: .default, handler: { (alert: UIAlertAction!) in
-          self.renderUploadButton()
-        }))
-      
-        present(alert, animated: true, completion: nil)
+          self.present(alert, animated: true, completion: nil)
+          
+        })
     }
 }
 
