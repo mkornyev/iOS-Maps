@@ -21,6 +21,7 @@
 		4C9C675A236E47ED00CAAD0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6759236E47ED00CAAD0B /* Preview Assets.xcassets */; };
 		4C9C675D236E47ED00CAAD0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C675B236E47ED00CAAD0B /* LaunchScreen.storyboard */; };
 		4C9C6765236E4A4100CAAD0B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */; };
+		50BF804323A281FD0092C9B0 /* CLLocationCoordinateEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BF804223A281FD0092C9B0 /* CLLocationCoordinateEquatable.swift */; };
 		50CC79512375B3FB00017FE5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79502375B3FB00017FE5 /* MapViewController.swift */; };
 		50CC79532375B41F00017FE5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79522375B41F00017FE5 /* Location.swift */; };
 		50CC79552375B45600017FE5 /* TripData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC79542375B45600017FE5 /* TripData.swift */; };
@@ -52,6 +53,7 @@
 		4C9C675C236E47ED00CAAD0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C9C675E236E47ED00CAAD0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C9C6764236E4A4100CAAD0B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		50BF804223A281FD0092C9B0 /* CLLocationCoordinateEquatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinateEquatable.swift; sourceTree = "<group>"; };
 		50CC794C2375B3B800017FE5 /* MapViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWrapper.swift; sourceTree = "<group>"; };
 		50CC794D2375B3B800017FE5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		50CC794E2375B3B800017FE5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				4C7E910A237509AF0034FBBB /* User.swift */,
 				50CC79522375B41F00017FE5 /* Location.swift */,
 				50CC79542375B45600017FE5 /* TripData.swift */,
+				50BF804223A281FD0092C9B0 /* CLLocationCoordinateEquatable.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				50CC79532375B41F00017FE5 /* Location.swift in Sources */,
 				50CC79572375B4E700017FE5 /* IntroAddTripView.swift in Sources */,
 				4C9C674E236E47EC00CAAD0B /* AppDelegate.swift in Sources */,
+				50BF804323A281FD0092C9B0 /* CLLocationCoordinateEquatable.swift in Sources */,
 				4C9C6755236E47EC00CAAD0B /* ContentView.swift in Sources */,
 				50CC795B2375B99100017FE5 /* PostCard.swift in Sources */,
 				50CC79512375B3FB00017FE5 /* MapViewController.swift in Sources */,

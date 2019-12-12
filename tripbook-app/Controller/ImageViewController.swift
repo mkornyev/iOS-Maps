@@ -50,6 +50,7 @@ class ImageViewController: UIViewController {
     // MARK: - Buttons and Form Vars
     lazy var takePhotoBarButton = UIBarButtonItem(title: "Take a Photo", style: .done, target: self, action: #selector(takePhoto))
     lazy var selectPhotoBarButton = UIBarButtonItem(title: "Select a Photo", style: .plain, target: self, action: #selector(selectPhoto))
+    lazy var cancelBarButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(cancelPhoto))
 //    var uploadPhotoButton = UIButton(frame: CGRect(x: 75, y: 600, width: 250, height: 35))
   
     lazy var scrollView: UIScrollView = {
@@ -164,6 +165,7 @@ class ImageViewController: UIViewController {
 
         renderScrollView()
         navigationItem.setLeftBarButtonItems([takePhotoBarButton, selectPhotoBarButton], animated: true)
+        navigationItem.setRightBarButtonItems([cancelBarButton], animated: true)
       
       // add button to screen later
       
@@ -204,29 +206,12 @@ class ImageViewController: UIViewController {
       contentStack.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
       contentStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
       
-      
-//      contentStack.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 0).isActive = true
-//      contentStack.widthAnchor.constraint(equalToConstant: 200).isActive = true
-//      contentStack.heightAnchor.constraint(equalToConstant: 20).isActive = true
-      
       // Add activity indicator
       scrollView.addSubview(activityIndicator)
       activityIndicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
     }
   
   func renderPostForm() {
-//    scrollView.addSubview(headingLabel)
-//
-//    headingLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-//    headingLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 0).isActive = true
-//    headingLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
-//
-//    scrollView.addSubview(annotationLabel)
-//
-//    annotationLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-//    annotationLabel.topAnchor.constraint(equalTo: headingLabel.bottomAnchor, constant: 40).isActive = true
-//    annotationLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
-    
     contentStack.addArrangedSubview(headingLabel)
     
     headingLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
@@ -306,12 +291,16 @@ class ImageViewController: UIViewController {
     @objc fileprivate func takePhoto() {
         present(imagePickerController, animated: true, completion: nil)
     }
+  
+  @objc fileprivate func cancelPhoto() {
+      self.navigationController?.popToRootViewController(animated: true)
+  }
     
     
   @objc fileprivate func uploadPhoto() {
         uploadPhotoHelper()
         self.navigationController?.popToRootViewController(animated: true)
-    }
+  }
   
   @objc func selectPhoto() {
     if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
@@ -329,21 +318,8 @@ class ImageViewController: UIViewController {
       return
     }
     
-    // Get db
-    let db = Firestore.firestore()
-    
     // Save photo to FireStorage
     uploadPhotoHelper()
-    
-    
-//    db.collection("posts").addDocument(data: data) { err in
-//      if err != nil {
-//          self.presentAlert(title: "Error", message: "Could not upload post")
-//        } else {
-//            self.navigationController?.popToRootViewController(animated: true)
-//        }
-//    }
-    
   }
     
     

@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import FirebaseFirestore
 import FirebaseStorage
+import Kingfisher
 
 class MapViewController: UIViewController {
   // MARK: - Passed State Vars
@@ -18,6 +19,8 @@ class MapViewController: UIViewController {
 //  var loadTrip: Bool
   private var LATENCY:Double = 2.5
   let userRefString = "jTwrnfSpEiOFVmnYyFtg" // WILL ADD A PLIST VAL FOR THIS
+  let resizedImgWidth = CGFloat(50.0)
+  let resizedImgBorder = CGFloat(10.0)
   
   // MARK: - Trip Models
   
@@ -113,7 +116,7 @@ class MapViewController: UIViewController {
   }
 }
 
-// MARK: - Polyline Rendering
+// MARK: - Polyline Rendering & Map Annotations
 
 extension MapViewController: MKMapViewDelegate {
   
@@ -130,27 +133,83 @@ extension MapViewController: MKMapViewDelegate {
   }
   
   // For adding Image annotations
-//  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//    if !(annotation is MKPointAnnotation) {
-//        return nil
-//    }
-//
-//    let annotationIdentifier = "AnnotationIdentifier"
-//    var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
-//
-//    if annotationView == nil {
-//        annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-//        annotationView!.canShowCallout = true
-//    }
-//    else {
-//        annotationView!.annotation = annotation
-//    }
-//
-//    let pinImage = UIImage(named: "comment")
-//    annotationView!.image = pinImage
-//
-//    return annotationView
-//  }
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    if !(annotation is MKPointAnnotation) {
+        print("Nil")
+        return nil
+    }
+
+    let annotationIdentifier = "Identifier"
+    var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
+
+    if annotationView == nil {
+        annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+        annotationView!.canShowCallout = true
+    }
+    else {
+        annotationView!.annotation = annotation
+    }
+    
+    if self.tripData.image_coordinates.contains(annotation.coordinate) {
+      let imageIdentifier = self.tripData.image_coordinates.firstIndex(of: annotation.coordinate)!
+      
+      // Download Resource
+      let resource = ImageResource(downloadURL: tripData.images[imageIdentifier])
+      
+      KingfisherManager.shared.retrieveImage(with: resource) { (result) in
+        switch result {
+          case .success(let value):
+            let scale = self.resizedImgWidth / value.image.size.width
+            let newHeight = value.image.size.height * scale
+            
+            let img = UIImageView(image: self.imageScaleHelper(image: value.image))
+            
+            let offset = -1 * (self.resizedImgWidth / 12)
+            let background = UIView(frame: CGRect(x: offset, y: offset, width: self.resizedImgWidth + self.resizedImgBorder, height: newHeight + self.resizedImgBorder))
+            background.backgroundColor = UIColor.systemBlue
+            background.layer.cornerRadius = 7
+
+            /*Set circle's tag to 1*/
+            background.tag = 1
+            /*Add the circle beneath the annotation*/
+            annotationView!.insertSubview(background, at: 0)
+            annotationView!.insertSubview(img, at: 1)
+            
+//            annotationView!.image = img
+          case .failure(let err):
+            print("Failed to set image: \(err)")
+            annotationView!.image = UIImage(named: "TextIcon")
+          default:
+            annotationView!.image = UIImage(named: "TextIcon")
+        }
+      }
+//      annotationView!.image = pinImage
+    } else if self.tripData.annotation_coordinates.contains(annotation.coordinate) {
+      let pinImage = UIImage(named: "MapTextIcon")
+      annotationView!.image = pinImage
+    } else {
+      return nil
+    }
+    
+    return annotationView
+  }
+  
+  func imageScaleHelper(image: UIImage) -> UIImage {
+    let scale = resizedImgWidth / image.size.width
+    let newHeight = image.size.height * scale
+    UIGraphicsBeginImageContext(CGSize(width: resizedImgWidth, height: newHeight))
+    image.draw(in: CGRect(x: 0, y: 0, width: resizedImgWidth, height: newHeight))
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+
+    if let retImage = newImage {
+      return retImage
+    } else {
+      fatalError("Couldnt resize image")
+      return newImage!
+    }
+  }
   
   func drawPolyline(_ data: [CLLocationCoordinate2D]) -> Void {
     // REMOVE routes, replace w/TripData.trip
@@ -174,6 +233,13 @@ extension MapViewController: MKMapViewDelegate {
       let coord = tripData.annotation_coordinates[i]
 
       setAnnotation(coord, title: annotation, subTitle: "")
+    }
+    
+    // Also Image annotations
+    for i in 0..<tripData.images.count {
+      let coord = tripData.image_coordinates[i]
+
+      setAnnotation(coord, title: "", subTitle: "")
     }
   }
 //
@@ -393,6 +459,9 @@ extension MapViewController {
  
 }
 
+
+//MARK: - Trip Logging
+
 extension MapViewController {
   func beginTripLogging() {
     return
@@ -425,32 +494,57 @@ extension MapViewController {
   
   @objc func fire()
   {
-    // get location
+    print("FIRED")
+    
+    // Get location if possible
     location.getCurrentLocation()
     if let coord = location.coordinate {
       tripData.trip_data.append(coord)
-    } else { return }
+    }
     
+    // Log location to Firestore
     
-//    let data: [String: Any] = [
-//        "annotation_coordinates": [],
-//        "annotations": [],
-//        "distance": dist,
-//        "likes_count": 0,
-//        "post_annotation": annotationText.text!,
-//        "post_image": imageUrl,
-//        "tagline": summaryText.text!,
-//        "trip": tripRef,
-//        "user": userRef
-//    ]
-//
-//    db.collection("trips").document(tripRefString).setData(data) { err in
-//        if let err = err {
-//          self.presentAlert(title: "Error", message: "Could not upload trip")
-//        } else {
-//            self.navigationController?.popToRootViewController(animated: true)
-//        }
-//    }
+    var a_coords:[GeoPoint] = []
+    for coord in tripData.annotation_coordinates {
+      a_coords.append(GeoPoint(latitude: coord.latitude, longitude: coord.longitude))
+    }
+    
+    var i_coords:[GeoPoint] = []
+    for coord in tripData.image_coordinates {
+      i_coords.append(GeoPoint(latitude: coord.latitude, longitude: coord.longitude))
+    }
+    
+    var t_coords:[GeoPoint] = []
+    for coord in tripData.trip_data {
+      t_coords.append(GeoPoint(latitude: coord.latitude, longitude: coord.longitude))
+    }
+    
+    let data: [String: Any] = [
+        "annotation_coordinates": a_coords,
+        "annotations": tripData.annotations,
+        "distance": tripData.distance, // NEED TO SET
+//        "end_date": tripData.end_date,
+        "from_location": tripData.from_location,
+        "image_coordinates": i_coords,
+        // "images": tripData.images, // ALREADY SET IN POST FUNCTIONALITY
+        "start_date": Timestamp(date: tripData.start_date),
+        "to_location": tripData.to_location,
+        "trip_data": t_coords,
+        "user": tripData.user
+    ]
+    
+    let df = DateFormatter()
+    df.dateFormat = "yyyy-MM-dd hh:mm:ss"
+    
+    let tripRefString = tripData.trip_ref == "" ? df.string(from: tripData.start_date) : tripData.trip_ref
+    
+    db.collection("trips").document(tripRefString).setData(data) { err in
+        if let err = err {
+          fatalError("Could not post trip. Turn off airplane mode.")
+        } else {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+    }
     
   }
 }

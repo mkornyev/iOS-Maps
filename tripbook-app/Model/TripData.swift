@@ -22,7 +22,7 @@ class TripData {
   var distance: Int
   var trip_data: [CLLocationCoordinate2D]
   var image_coordinates: [CLLocationCoordinate2D]
-  var images: [String]
+  var images: [URL]
   var annotation_coordinates: [CLLocationCoordinate2D]
   var annotations: [String]
 //  var tripImages: [CLLocationCoordinate2D: String]
@@ -137,7 +137,11 @@ class TripData {
       
       case "images":
         let rawArray = value as! [String]
-        self.images = rawArray
+        
+        for str in rawArray {
+          let url = URL(string: str)!
+          self.images.append(url)
+        }
       
       case "annotation_coordinates":
         let rawArray = value as! [GeoPoint]
