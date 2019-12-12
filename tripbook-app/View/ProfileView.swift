@@ -48,20 +48,6 @@ struct ProfileView: View {
       List(posts.posts){ (post: Post) in
         VStack(alignment: .leading) {
                           
-          HStack(){
-            Image(post.profile_pic)
-              .resizable()
-              .aspectRatio(contentMode: .fill)
-              .frame(width:50.0, height: 50.0)
-              .clipShape(Circle())
-              .shadow(radius: 10)
-              .overlay(Circle().stroke(Color.white, lineWidth: 2))
-              
-            Text(post.username)
-              .fontWeight(.bold)
-    
-          }
-          .padding(.leading, 10.0)
           Image(post.post_images[0])
             .resizable()
             .aspectRatio(contentMode: .fill)

@@ -54,6 +54,9 @@ class ImageViewController: UIViewController {
   
     lazy var scrollView: UIScrollView = {
        let view = UIScrollView()
+//        view.isScrollEnabled = true
+//        view.contentSize = CGSize(width: yourWidth, height: yourHeight)
+      
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentSize.height = 2000
 //        view.backgroundColor = UIColor.white
@@ -68,6 +71,8 @@ class ImageViewController: UIViewController {
       stackView.distribution = .equalSpacing
       stackView.spacing = 10
       stackView.backgroundColor = .systemRed
+//      myHeightConstraint.constant += extraHeight
+      
       
       return stackView
     }()
@@ -193,7 +198,14 @@ class ImageViewController: UIViewController {
       scrollView.addSubview(contentStack)
       
       contentStack.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-      contentStack.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 0).isActive = true
+      
+      contentStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+      contentStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+      contentStack.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+      contentStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+      
+      
+//      contentStack.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 0).isActive = true
 //      contentStack.widthAnchor.constraint(equalToConstant: 200).isActive = true
 //      contentStack.heightAnchor.constraint(equalToConstant: 20).isActive = true
       
@@ -203,6 +215,18 @@ class ImageViewController: UIViewController {
     }
   
   func renderPostForm() {
+//    scrollView.addSubview(headingLabel)
+//
+//    headingLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+//    headingLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 0).isActive = true
+//    headingLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+//
+//    scrollView.addSubview(annotationLabel)
+//
+//    annotationLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+//    annotationLabel.topAnchor.constraint(equalTo: headingLabel.bottomAnchor, constant: 40).isActive = true
+//    annotationLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 20).isActive = true
+    
     contentStack.addArrangedSubview(headingLabel)
     
     headingLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
@@ -300,37 +324,25 @@ class ImageViewController: UIViewController {
   }
   
   @objc func uploadPost() {
-    if summaryText.text == nil || annotationText == nil {
+    if summaryText.text == "" || annotationText.text == "" {
       presentAlert(title: "Error", message: "Fill out all the fields")
       return
     }
     
+    // Get db
+    let db = Firestore.firestore()
+    
     // Save photo to FireStorage
     uploadPhotoHelper()
     
-    let userRef = Firestore.firestore().collection("users").document(self.userRefString)
-    let tripRef = Firestore.firestore().collection("trips").document(self.tripRefString)
     
-    let data: [String: Any] = [
-        "comments_count": 0,
-        "date": Timestamp(date: Date()),
-        "is_liked": false,
-        "likes_count": 0,
-        "post_annotation": annotationText.text!,
-        "post_image": imageUrl,
-        "tagline": summaryText.text!,
-        "trip": tripRef,
-        "user": userRef
-    ]
-    
-    // FIXED
-    db.collection("posts").addDocument(data: data) { err in
-      if err != nil {
-          self.presentAlert(title: "Error", message: "Could not upload post")
-        } else {
-            self.navigationController?.popToRootViewController(animated: true)
-        }
-    }
+//    db.collection("posts").addDocument(data: data) { err in
+//      if err != nil {
+//          self.presentAlert(title: "Error", message: "Could not upload post")
+//        } else {
+//            self.navigationController?.popToRootViewController(animated: true)
+//        }
+//    }
     
   }
     
@@ -359,7 +371,13 @@ extension ImageViewController: UINavigationControllerDelegate, UIImagePickerCont
         }
         imageView.image = selectedImage
         imagePickerController.dismiss(animated: true, completion: { () -> Void in
-          self.renderPostForm()
+          // With a slight delay
+          UIView.animate(withDuration: 2.0) {
+            self.imageView.alpha = 0.0
+          }
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.renderPostForm()
+          }
 //          let alert = UIAlertController(title: "Nice photo", message: "Would you like to post your image?", preferredStyle: .alert)
 //
 //          alert.addAction(UIAlertAction(title: "Yes please!", style: .default, handler: { (alert: UIAlertAction!) in
@@ -411,13 +429,43 @@ extension ImageViewController: UINavigationControllerDelegate, UIImagePickerCont
               Firestore.firestore().collection("trips").whereField("user", isEqualTo: userRef).getDocuments() { (querySnapshot, err) in
                 if err != nil { self.presentAlert(title: "Error", message: "Couldn't add image to Trip"); return; }
                 let document = querySnapshot!.documents.first
+                let geoPoint:GeoPoint = GeoPoint(latitude: self.lastRecordedLocation.latitude, longitude: self.lastRecordedLocation.longitude)
+                
                 document!.reference.updateData([
                   "images": FieldValue.arrayUnion([url.absoluteString]),
-                  "image_coordinates": FieldValue.arrayUnion([self.lastRecordedLocation])
+                  "image_coordinates": FieldValue.arrayUnion([geoPoint])
                 ])
                 
                 // Save imageUrl
                 self.imageUrl = url.absoluteString
+                
+                // POST UPLOAD
+                
+                let userRef = Firestore.firestore().collection("users").document(self.userRefString)
+                let tripRef = Firestore.firestore().collection("trips").document(self.tripRefString)
+                
+                let data: [String: Any] = [
+                    "comments_count": 0,
+                    "date": Timestamp(date: Date()),
+                    "is_liked": false,
+                    "likes_count": 0,
+                    "post_annotation": self.annotationText.text ?? "",
+                    "post_image": self.imageUrl,
+                    "tagline": self.summaryText.text ?? "",
+                    "trip": tripRef,
+                    "user": userRef
+                ]
+                
+
+                  Firestore.firestore().collection("posts").addDocument(data: data) { err in
+                    if err != nil {
+                        self.presentAlert(title: "Error", message: "Could not upload post")
+                      } else {
+                          self.navigationController?.popToRootViewController(animated: true)
+                      }
+                  }
+                
+                // POST UPLOAD END
               }
           })
       }

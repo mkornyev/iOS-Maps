@@ -207,8 +207,9 @@ extension MapViewController {
   
   func showEditTools() -> Void {
     let buttonWidth = view.frame.width/4
+    let buttonY = (self.view.frame.height*2.5)/4
     
-    addText = UIButton(frame: CGRect(x: 50, y: 600, width: buttonWidth, height: 35))
+    addText = UIButton(frame: CGRect(x: 25, y: buttonY, width: buttonWidth, height: 35))
     addText.setTitle("Add Text", for: .normal)
     addText.addTarget(self, action: #selector(addTextButtonTap), for: .touchUpInside)
     setButtonStyle(addText)
@@ -217,7 +218,7 @@ extension MapViewController {
     addText.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
     addText.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
 
-    addImage = UIButton(frame: CGRect(x: 175, y: 600, width: buttonWidth, height: 35))
+    addImage = UIButton(frame: CGRect(x: 150, y: buttonY, width: buttonWidth, height: 35))
     addImage.setTitle("Add Image", for: .normal)
     addImage.addTarget(self, action: #selector(addImageButtonTap), for: .touchUpInside)
     setButtonStyle(addImage)
@@ -226,7 +227,7 @@ extension MapViewController {
     addImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
     addImage.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
 
-    stopTrip = UIButton(frame: CGRect(x: 300, y: 600, width: view.frame.width/4, height: 35))
+    stopTrip = UIButton(frame: CGRect(x: 275, y: buttonY, width: view.frame.width/4, height: 35))
     stopTrip.setTitle("Stop Trip", for: .normal)
     stopTrip.addTarget(self, action: #selector(stopButtonTap), for: .touchUpInside)
     setButtonStyle(stopTrip)
@@ -238,8 +239,9 @@ extension MapViewController {
   
   func showCreateTools() {
     let buttonWidth = view.frame.width/4
+    let buttonY = (self.view.frame.height*2.5)/4
     
-    newTrip = UIButton(frame: CGRect(x: 250, y: 600, width: buttonWidth, height: 35))
+    newTrip = UIButton(frame: CGRect(x: 250, y: buttonY, width: buttonWidth, height: 35))
     newTrip.setTitle("New Trip", for: .normal)
     newTrip.addTarget(self, action: #selector(newTripButtonTap), for: .touchUpInside)
     setButtonStyle(newTrip)
