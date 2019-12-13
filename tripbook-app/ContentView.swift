@@ -20,36 +20,6 @@ struct ContentView: View {
 //    init() {
 //        UINavigationBar.appearance().backgroundColor = .systemBlue
 //    }
-  
-    // Loads trip for current user
-    private func loadTrip() -> Void {
-      let db = Firestore.firestore()
-      let userRefString = "jTwrnfSpEiOFVmnYyFtg" // WILL ADD A PLIST VAL FOR THIS
-      let userRef = Firestore.firestore().collection("users").document(userRefString) 
-      let mostRecentTripRef = db.collection("trips").whereField("user", isEqualTo: userRef).order(by: "start_date", descending: true).limit(to: 1)
-      
-      mostRecentTripRef.getDocuments { (querySnapshot, err) in
-        if let err = err {
-          print("Error receiving Firestore snapshot: \(err) | loadTrip() in ContentView")
-          self.tripData.loadTripData()
-        } else {
-          if querySnapshot!.documents.count == 0 { print("ERROR: Did not get any documents for filter | loadTrip() in ContentView") }
-          
-          for document in querySnapshot!.documents {
-            if let str = document.data()["to_location"] as? String {
-              if str == "" {
-                print("\n\nGOT TRIP STRING1: \(document.documentID)\n\n")
-                self.tripData.loadTripData(document.documentID)
-              }
-            }
-            else {
-              print("\n\nGOT TRIP STRING2: \(document.documentID)\n\n")
-              self.tripData.loadTripData(document.documentID)
-            }
-          }
-        }
-      }
-    }
  
     var body: some View {
       TabView(selection: $selection){
@@ -76,7 +46,7 @@ struct ContentView: View {
             NavigationView {
                 if firstTimeUser { IntroAddTripView().navigationBarTitle("My TripBook")  }
                 else { MapViewWrapper(data: tripData)
-                  .onAppear() { self.loadTrip() }
+//                  .onAppear() { self.loadTrip() }
                   .navigationBarTitle("Your Trip") }
                 }
                 .edgesIgnoringSafeArea(.top)

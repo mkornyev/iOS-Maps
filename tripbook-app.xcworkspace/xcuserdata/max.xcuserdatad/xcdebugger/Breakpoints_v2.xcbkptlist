@@ -14,8 +14,8 @@
             filePath = "tripbook-app/Controller/MapViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "drawPolyline(_:)"
             landmarkType = "7">
          </BreakpointContent>
