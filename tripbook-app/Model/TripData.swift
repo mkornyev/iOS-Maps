@@ -12,7 +12,6 @@ extension GeoPoint: GeoPointType {}
 extension DocumentReference: DocumentReferenceType {}
 
 class TripData {
-//  let db = Firestore.firestore()
   
   // MARK: - Trip Attributes
   
@@ -25,11 +24,8 @@ class TripData {
   var images: [URL]
   var annotation_coordinates: [CLLocationCoordinate2D]
   var annotations: [String]
-//  var tripImages: [CLLocationCoordinate2D: String]
-//  var tripAnnotations: [CLLocationCoordinate2D: String]
   var start_date: Date
   var end_date: Date?
-//  var visible: Bool
   var user: String
   
   init() {
@@ -44,7 +40,6 @@ class TripData {
     annotations = []
     start_date = Date(timeIntervalSinceReferenceDate: -123456789.0)
     end_date = nil
-//    visible = false
     user = ""
   }
 
@@ -52,9 +47,6 @@ class TripData {
   
   // Populates the tripData struct given a valid tripID
   public func loadTripData(_ tripID: String = "JCzEKCv9XGglmZyq8V0J") -> Void {
-    
-//    let myGroup = DispatchGroup()
-//    myGroup.enter()
     
     let db = Firestore.firestore()
   
@@ -74,23 +66,8 @@ class TripData {
           }
         }
       }
-//      if let document = document, document.exists {
-//         for (key, value) in document.data()! {
-//           self.switchCase(key: key, value: value)
-//         }
-//      } else {
-//        print("ERROR: Couldn't recieve Firestore snapshot: \(err) | loadTripData() in TripData")
-//      }
       
     }
-//    myGroup.leave() //// When your task completes
-//    myGroup.notify(queue: DispatchQueue.main) {
-//      print("!!!!!!!!!!!!    DONE    !!!!!!!!!!!!")
-//    }
-    
-//    print("***********Trip data (end of loadTripData)**************")
-//    print(self.tripData.trip_data)
-//    print("**********************************")
   }
   
   private func switchCase(key: String, value: Any) {
@@ -162,6 +139,8 @@ class TripData {
 
 }
 
+
+// MARK: - .SwiftIgnore
 
 // Makes firebase call to load Tripdata
 //func reloadData(forUser: Int) -> Void {

@@ -7,14 +7,12 @@ import Foundation
 import CoreLocation
 
 import Firebase
-//import CodableFirebase
 
 // Tracks location for the AddTripView
 class Location: NSObject {
   
-//  var tripData: TripData
+  private var locationManager = CLLocationManager()
   var coordinate: CLLocationCoordinate2D?
-  var locationManager = CLLocationManager()
 
   override init() {
     self.coordinate = nil

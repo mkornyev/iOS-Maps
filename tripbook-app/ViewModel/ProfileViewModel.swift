@@ -15,7 +15,7 @@ import Combine
 class ProfileViewModel : ObservableObject, Identifiable {
   @Published var posts : [Post] = []
   var db: Firestore!
-  private var count = 1
+  var count = 1
   init() {
     let settings = FirestoreSettings()
     Firestore.firestore().settings = settings

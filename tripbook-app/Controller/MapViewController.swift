@@ -13,23 +13,25 @@ import FirebaseStorage
 import Kingfisher
 
 class MapViewController: UIViewController {
+  
   // MARK: - State Vars
   
-  private var LATENCY:Double = 4
-  let userRefString = "jTwrnfSpEiOFVmnYyFtg" // WILL ADD A PLIST VAL FOR THIS
+  static var LATENCY:Double = 4
+  static let userRefString = "jTwrnfSpEiOFVmnYyFtg" // WILL ADD A PLIST VAL FOR THIS
   let resizedImgWidth = CGFloat(50.0)
   let resizedImgBorder = CGFloat(10.0)
   
-  var counter = 0.001
+  // Hard coded vars for randomly generated movement
+  static var GENERATE_RANDOM_MOVEMENT = false
+  static var RANDOM_MOVEMENT_INCREMENT = 0.001
   
   // MARK: - Models & Button Models
   
-  var location: Location = Location()
+  private var location: Location = Location()
   var mapView: MKMapView!
   var tripData:TripData
   var tripLogger: Timer?
   let loggerInterval = 5.0
-//  let loggerInterval = 1.0
   var newTrip = UIButton()
   var addText = UIButton()
   var addImage = UIButton()
@@ -56,7 +58,7 @@ class MapViewController: UIViewController {
     frameMapView()
     self.view.addSubview(mapView)
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + LATENCY) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + MapViewController.LATENCY) {
       if self.tripData.from_location == "" {
         // NEW TRIP
         self.centerMap(onUser: true) // Sets span & region, centers map, and sets an annotation startpoint
@@ -66,7 +68,7 @@ class MapViewController: UIViewController {
         self.beginTripLogging()
         self.drawPolyline(self.tripData.trip_data) // Draws polyline from data, sets an annotation endpoint
         self.centerMap(onUser: false) // Center on trip
-        if (self.userRefString == self.tripData.user) { self.showEditTools() }
+        if (MapViewController.userRefString == self.tripData.user) { self.showEditTools() }
       }
     }
     mapView.delegate = self
@@ -135,384 +137,22 @@ class MapViewController: UIViewController {
         for document in querySnapshot!.documents {
           if let str = document.data()["to_location"] as? String {
             if str == "" {
-              print("\n\nGOT TRIP STRING1: \(document.documentID)\n\n")
               self.tripData.loadTripData(document.documentID)
             }
           }
           else {
-            print("\n\nGOT TRIP STRING2: \(document.documentID)\n\n")
             self.tripData.loadTripData(document.documentID)
           }
         }
       }
     }
   }
-
 }
 
-// MARK: - Polyline Rendering & Map Annotations
-
-extension MapViewController: MKMapViewDelegate {
-  
-  func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-    guard let polyline = overlay as? MKPolyline else {
-        return MKOverlayRenderer()
-    }
-    
-    // Polyline styles
-    let polylineRenderer = MKPolylineRenderer(overlay: polyline)
-    polylineRenderer.strokeColor = .systemBlue
-    polylineRenderer.lineWidth = 6
-    return polylineRenderer
-  }
-  
-  // For adding Image annotations
-  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-    if !(annotation is MKPointAnnotation) {
-        print("Nil")
-        return nil
-    }
-
-    let annotationIdentifier = String(annotation.coordinate.latitude) + String(annotation.coordinate.longitude)
-    var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
-
-    if annotationView == nil {
-        annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-        annotationView!.canShowCallout = true
-    }
-    else {
-        annotationView!.annotation = annotation
-    }
-    
-    if self.tripData.image_coordinates.contains(annotation.coordinate) {
-      let imageIdentifier = self.tripData.image_coordinates.firstIndex(of: annotation.coordinate)!
-      
-      // Download Resource
-      let resource = ImageResource(downloadURL: tripData.images[imageIdentifier])
-      
-      KingfisherManager.shared.retrieveImage(with: resource) { (result) in
-        switch result {
-          case .success(let value):
-            let scale = self.resizedImgWidth / value.image.size.width
-            let newHeight = value.image.size.height * scale
-            
-            let img = UIImageView(image: self.imageScaleHelper(image: value.image))
-            
-            let offset = -1 * (self.resizedImgWidth / 12)
-            let background = UIView(frame: CGRect(x: offset, y: offset, width: self.resizedImgWidth + self.resizedImgBorder, height: newHeight + self.resizedImgBorder))
-            background.backgroundColor = UIColor.systemBlue
-            background.layer.cornerRadius = 7
-
-            /*Set circle's tag to 1*/
-            background.tag = 1
-            /*Add the circle beneath the annotation*/
-            annotationView!.insertSubview(background, at: 0)
-            annotationView!.insertSubview(img, at: 1)
-            
-//            annotationView!.image = img
-          case .failure(let err):
-            print("Failed to set image: \(err)")
-            annotationView!.image = UIImage(named: "TextIcon")
-          default:
-            annotationView!.image = UIImage(named: "TextIcon")
-        }
-      }
-//      annotationView!.image = pinImage
-    } else if self.tripData.annotation_coordinates.contains(annotation.coordinate) {
-      let pinImage = UIImage(named: "MapTextIcon")
-      annotationView!.image = pinImage
-    } else {
-      return nil
-    }
-    
-    return annotationView
-  }
-  
-  func imageScaleHelper(image: UIImage) -> UIImage {
-    let scale = resizedImgWidth / image.size.width
-    let newHeight = image.size.height * scale
-    UIGraphicsBeginImageContext(CGSize(width: resizedImgWidth, height: newHeight))
-    image.draw(in: CGRect(x: 0, y: 0, width: resizedImgWidth, height: newHeight))
-    let newImage = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-    
-
-    if let retImage = newImage {
-      return retImage
-    } else {
-      fatalError("Couldnt resize image")
-      return newImage!
-    }
-  }
-  
-  func drawPolyline(_ data: [CLLocationCoordinate2D]) -> Void {
-    // REMOVE routes, replace w/TripData.trip
-    let polyline = MKPolyline(coordinates: data, count: data.count)
-    self.mapView.addOverlay(polyline)
-    
-    setAnnotation(data.first!, title: tripData.from_location, subTitle: "All roads start somewhere...")
-    
-    
-//    if let toLoc = tripData.to_location {
-//      setAnnotation(data.last!, title: toLoc, subTitle: "Is that as far as you're gonna go?")
-//    } else {
-//      setAnnotation(data.last!, title: "Your Location", subTitle: "Is that as far as you're gonna go?")
-//    }
-    
-    renderTextAnnotations()
-  }
-  
-  func renderTextAnnotations() {
-    for i in 0..<tripData.annotations.count {
-      let annotation = tripData.annotations[i]
-      let coord = tripData.annotation_coordinates[i]
-
-      setAnnotation(coord, title: annotation, subTitle: "")
-    }
-    
-    // Also Image annotations
-    for i in 0..<tripData.images.count {
-      let coord = tripData.image_coordinates[i]
-
-      setAnnotation(coord, title: "", subTitle: "")
-    }
-  }
-//
-//  func setImageAnnotation(_ coordinate: CLLocationCoordinate2D, title: String, subTitle: String) -> Void {
-//    let annotation = MKPointAnnotation()
-//    annotation.coordinate = coordinate
-//    annotation.title = title
-//    annotation.subtitle = subTitle
-//    mapView.addAnnotation(annotation)
-//  }
-  
-  func setAnnotation(_ coordinate: CLLocationCoordinate2D, title: String, subTitle: String) -> Void {
-    let annotation = MKPointAnnotation()
-    annotation.coordinate = coordinate
-    annotation.title = title
-    annotation.subtitle = subTitle
-    mapView.addAnnotation(annotation)
-  }
-  
-}
-
-// MARK: - UIButtons & Actions
+//MARK: - Trip Logging Section
 
 extension MapViewController {
-  struct firebaseKeys {
-    static let imgFolder = "userImages" // Firebase Storage Folder
-    static let imgCollection = "coll"
-    static let uid = "uid"
-    static let imgUrl = "url"
-  }
   
-  func showEditTools() -> Void {
-    let buttonWidth = view.frame.width/3.2
-    let buttonY = (self.view.frame.height*2.9)/4
-    
-    addText = UIButton(frame: CGRect(x: 10, y: buttonY, width: buttonWidth, height: 45))
-    addText.setTitle("Add Text", for: .normal)
-    addText.addTarget(self, action: #selector(addTextButtonTap), for: .touchUpInside)
-    setButtonStyle(addText)
-    
-    addText.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 10).isActive = true
-    addText.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-    addText.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-
-    addImage = UIButton(frame: CGRect(x: self.view.frame.width/2 - buttonWidth/2, y: buttonY, width: buttonWidth, height: 45))
-    addImage.setTitle("Add Image", for: .normal)
-    addImage.addTarget(self, action: #selector(addImageButtonTap), for: .touchUpInside)
-    setButtonStyle(addImage)
-    
-    addImage.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 10).isActive = true
-    addImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-    addImage.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-
-    stopTrip = UIButton(frame: CGRect(x: (self.view.frame.width - buttonWidth - 10), y: buttonY, width: buttonWidth, height: 45))
-    stopTrip.setTitle("Stop Trip", for: .normal)
-    stopTrip.addTarget(self, action: #selector(stopButtonTap), for: .touchUpInside)
-    setButtonStyle(stopTrip)
-    
-    stopTrip.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 10).isActive = true
-    stopTrip.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 20).isActive = true
-    stopTrip.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-  }
-  
-  func showCreateTools() {
-    let buttonWidth = view.frame.width*6/7
-    let buttonY = (self.view.frame.height*2.9)/4
-    
-    newTrip = UIButton(frame: CGRect(x: view.frame.width/14, y: buttonY, width: buttonWidth, height: 45))
-    newTrip.setTitle("New Trip", for: .normal)
-    newTrip.addTarget(self, action: #selector(newTripButtonTap), for: .touchUpInside)
-    setButtonStyle(newTrip)
-    
-    newTrip.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 10).isActive = true
-    newTrip.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-  }
-   
-  func setButtonStyle(_ button: UIButton) {
-    button.backgroundColor = .blue
-    button.alpha = 0.85
-    button.setTitleColor(.white, for: .normal)
-    button.setTitleColor(.darkGray, for: .highlighted)
-    button.setTitleShadowColor(.systemGray, for: .normal)
-    button.layer.cornerRadius = 10
-    button.layer.borderWidth = 0.2
-    button.layer.borderColor = UIColor.white.cgColor
-
-    self.view.addSubview(button)
-  }
- 
-  @objc func newTripButtonTap(sender: UIButton!) {
-    let alert = UIAlertController(title: "New Trip", message: "Enter your starting point", preferredStyle: .alert)
-    alert.addTextField { (textField) in
-      textField.text = "A road less travelled"
-    }
-    alert.addAction(UIAlertAction(title: "Start", style: .default, handler: { [weak alert] (_) in
-      let text = String(alert?.textFields![0].text! ?? "Start")
-      self.tripData.from_location = text
-      
-      self.newTrip.removeFromSuperview()
-      self.showEditTools()
-      self.beginTripLogging()
-    }))
-    
-    self.present(alert, animated: true, completion: nil)
-  }
-  
-  @objc func addTextButtonTap(sender: UIButton!) {
-    let alert = UIAlertController(title: "Add Text", message: "Describe what you're doing!", preferredStyle: .alert)
-    alert.addTextField { (textField) in
-      textField.text = "Living loving life"
-    }
-    alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak alert] (_) in
-      let text = String(alert?.textFields![0].text! ?? "Living loving life")
-      
-      // Update current trip
-      let tripRef = Firestore.firestore().collection("trips").document(self.tripData.trip_ref)
-      
-      
-      let lat = self.tripData.trip_data.last!.latitude
-      let long = self.tripData.trip_data.last!.longitude
-      
-      tripRef.updateData([
-         "annotations": FieldValue.arrayUnion([text]),
-         "annotation_coordinates": FieldValue.arrayUnion([GeoPoint(latitude: lat, longitude: long)])
-       ])
-      
-      self.setAnnotation(self.tripData.trip_data.last!, title: text, subTitle: "")
-    }))
-    present(alert, animated: true)
-  }
- 
- @objc func addImageButtonTap(sender: UIButton!) {
-  let imageVC = ImageViewController(location: tripData.trip_data.last!, tripRefString: tripData.trip_ref)
-  imageVC.modalPresentationStyle = .overFullScreen
-  
-  self.navigationController?.pushViewController(imageVC, animated: true)
- }
-
- @objc func stopButtonTap(sender: UIButton!) {
-   let alert = UIAlertController(title: "Woah, traveller!", message: "Enter your final destination:", preferredStyle: .alert)
-   alert.addTextField { (textField) in
-       textField.text = "Somewhere far away..."
-       textField.clearButtonMode = UITextField.ViewMode.whileEditing
-   }
-   alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak alert] (_) in
-    let textField = alert?.textFields![0].text!
-       
-    // Stop Current Logging
-    if self.tripLogger != nil {
-      self.tripLogger!.invalidate()
-      self.tripLogger = nil
-    }
-    
-    // Update current trip
-    let tripRef = Firestore.firestore().collection("trips").document(self.tripData.trip_ref)
-    let point1 = MKMapPoint(self.tripData.trip_data.first!)
-    let point2 = MKMapPoint(self.tripData.trip_data.last!)
-    let dist = Int(point1.distance(to: point2));
-
-    tripRef.updateData([
-       "distance": dist,
-       "end_date": Timestamp(date: Date()),
-       "to_location": textField
-     ])
-    
-    self.tripData.loadTripData(self.tripData.trip_ref) // Start Async call early
-    
-    self.addText.removeFromSuperview()
-    self.addImage.removeFromSuperview()
-    self.stopTrip.removeFromSuperview()
-    
-    self.renderDetailOverlay()
-   }))
-  
-   present(alert, animated: true)
- }
-  
-  func renderDetailOverlay() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + LATENCY) {
-      let dist = String(self.tripData.distance)
-      
-      let distLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 20, y: 60, width: self.view.frame.size.width, height: 40))
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 28)
-        label.text = dist + " meters"
-        label.textColor = .black
-        label.textAlignment = .center
-        label.layer.shadowOffset = CGSize(width: 2, height: 2)
-        label.layer.shadowColor = UIColor.gray.cgColor
-        label.layer.shadowOpacity = 0.5
-        return label
-      }()
-      
-      let diff = Calendar.current.dateComponents([.day], from: self.tripData.start_date, to: self.tripData.end_date ?? Date())
-      
-      let diffLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 20, y: 20, width: self.view.frame.size.width, height: 40))
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 28)
-        label.text = String(format: "%02ld", diff.day!) + " days"
-        label.textColor = .black
-        label.textAlignment = .center
-        label.layer.shadowOffset = CGSize(width: 2, height: 2)
-        label.layer.shadowColor = UIColor.gray.cgColor
-        label.layer.shadowOpacity = 0.5
-        return label
-      }()
-      
-      self.mapView.addSubview(distLabel)
-      distLabel.alpha = 0
-      distLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
-      distLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-    
-      self.mapView.addSubview(diffLabel)
-      diffLabel.alpha = 0
-      diffLabel.topAnchor.constraint(equalTo: distLabel.bottomAnchor, constant: 20).isActive = true
-      diffLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-      
-      UIView.animate(withDuration: 0.5) {
-        distLabel.alpha = 1.0
-        distLabel.layoutIfNeeded()
-        diffLabel.alpha = 1.0
-        diffLabel.layoutIfNeeded()
-      }
-    }
-    
-    let newAlert = UIAlertController(title: "Congrats on finishing your trip!", message: "You may need to restart the app to create a new one.", preferredStyle: .alert)
-    newAlert.addAction(UIAlertAction(title: "Done", style: .default))
-    present(newAlert, animated: true)
-  }
- 
-}
-
-
-//MARK: - Trip Logging
-
-extension MapViewController {
   func beginTripLogging() {
     location.getCurrentLocation()
     
@@ -523,13 +163,12 @@ extension MapViewController {
     }
     
     // Set trip struct
-    tripData.user = self.userRefString
+    tripData.user = MapViewController.userRefString
     tripData.distance = 0
     tripData.start_date = Date()
     
     // Start Logger
     self.tripLogger = Timer.scheduledTimer(timeInterval: self.loggerInterval, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
-    
   }
   
   @objc func fire()
@@ -538,16 +177,18 @@ extension MapViewController {
     
     // Get location if possible
     location.getCurrentLocation()
-    if var coord = location.coordinate  {
+    if let coord = location.coordinate  {
       if tripData.trip_data.count > 1 {
         let lastCoord = self.tripData.trip_data.last!
         
         // For auto generated movement
-//        let newcoord = CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude + self.counter)
-//        self.counter = self.counter + 0.001
-//        tripData.trip_data.append(newcoord)
-        
-        if lastCoord.latitude != coord.latitude && lastCoord.longitude != coord.longitude { tripData.trip_data.append(coord) }
+        if MapViewController.GENERATE_RANDOM_MOVEMENT {
+          let newcoord = CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude + MapViewController.RANDOM_MOVEMENT_INCREMENT)
+          MapViewController.RANDOM_MOVEMENT_INCREMENT = MapViewController.RANDOM_MOVEMENT_INCREMENT * 2
+          tripData.trip_data.append(newcoord)
+        } else {
+          if lastCoord.latitude != coord.latitude && lastCoord.longitude != coord.longitude { tripData.trip_data.append(coord) }
+        }
       }
       else if tripData.trip_data.count == 1 { tripData.trip_data.append(coord) }
     }

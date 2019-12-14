@@ -14,4 +14,8 @@ target 'tripbook-app' do
 
   pod 'TinyConstraints'
   pod 'Kingfisher', '~> 5.3.1'
+
+  target 'tripbook-testsuite' do
+    pod 'Firebase'
+  end
 end

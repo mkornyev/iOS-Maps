@@ -13,7 +13,7 @@ struct MapViewWrapper: UIViewControllerRepresentable {
   
   func makeUIViewController(context: UIViewControllerRepresentableContext<MapViewWrapper>) -> MapViewController {
     let mapController = MapViewController(tripData: data)
-//    let mapController = MapViewController()
+    
     return mapController
   }
   

@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 
-struct User : Hashable, Identifiable {
+struct User: Hashable, Identifiable {
   var id: String
   var bio: String
   var email: String

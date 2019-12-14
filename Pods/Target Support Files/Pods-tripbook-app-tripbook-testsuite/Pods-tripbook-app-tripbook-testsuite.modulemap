@@ -1,0 +1,6 @@
+framework module Pods_tripbook_app_tripbook_testsuite {
+  umbrella header "Pods-tripbook-app-tripbook-testsuite-umbrella.h"
+
+  export *
+  module * { export * }
+}
